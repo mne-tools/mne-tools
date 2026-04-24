@@ -1,0 +1,264 @@
+- name: Admins
+  description: Full access
+  members:
+  - agramfort
+  - drammock
+  - larsoner
+  permissions:
+  - repo: mne-bids
+    role: admin
+  - repo: mne-bids-app
+    role: admin
+  - repo: mne-bids-pipeline
+    role: admin
+  - repo: mne-cpp
+    role: admin
+  - repo: mne-cpp-presentations
+    role: admin
+  - repo: mne-denoise
+    role: read
+  - repo: mne-gsoc2018-3d
+    role: admin
+  - repo: mne-hfo
+    role: admin
+  - repo: mne-incubator
+    role: admin
+  - repo: mne-kit-gui
+    role: admin
+  - repo: mne-matlab
+    role: admin
+  - repo: mne-misc-data
+    role: admin
+  - repo: mne-nirs
+    role: admin
+  - repo: mne-python
+    role: admin
+  - repo: mne-python-intro-slides
+    role: admin
+  - repo: mne-python-notebooks
+    role: admin
+  - repo: mne-qt-browser
+    role: admin
+  - repo: mne-scripts
+    role: admin
+  - repo: mne-testing-data
+    role: admin
+  - repo: mne-tools.github.io
+    role: admin
+  - repo: sprint2019
+    role: admin
+
+- name: Auxiliary
+  description: For people in auxiliary support roles (e.g., payment)
+  members:
+  - larsoner
+  - thclarkuw
+  permissions:
+  - repo: mne-python
+    role: read
+
+- name: Contributors mne-cpp
+  description: null
+  members:
+  - chdinh
+  - LorenzE
+
+- name: mne-bids
+  description: For pinging MNE-BIDS contributors
+  members:
+  - agramfort
+  - choldgraf
+  - hoechenberger
+  - jasmainak
+  - sappelhoff
+  - teonbrooks
+  - wmvanvliet
+
+- name: mne-bids-pipeline admin
+  description: ''
+  members:
+  - hoechenberger
+  - larsoner
+  permissions:
+  - repo: mne-bids-pipeline
+    role: admin
+
+- name: mne-cpp admins
+  description: ''
+  members:
+  - chdinh
+  - LorenzE
+  permissions:
+  - repo: mne-cpp
+    role: admin
+  - repo: mne-cpp-presentations
+    role: admin
+
+- name: mne-denoise admin
+  description: ''
+  members:
+  - BabaSanfour
+  - larsoner
+  - snesmaeili
+  permissions:
+  - repo: mne-denoise
+    role: admin
+
+- name: MNE-EMG maintainers
+  description: ''
+  members:
+  - drammock
+  - pranavm19
+  permissions:
+  - repo: mne-emg
+    role: maintain
+
+- name: mne-hcp admin
+  description: ''
+  members:
+  - dengemann
+  - larsoner
+  permissions:
+  - repo: mne-hcp
+    role: admin
+
+- name: mne-hfo admin
+  description: ''
+  members:
+  - adam2392
+  - larsoner
+  permissions:
+  - repo: mne-hfo
+    role: admin
+
+- name: mne-icalabel admins
+  description: ''
+  members:
+  - adam2392
+  - agramfort
+  - anandsaini024
+  - jacobf18
+  - mscheltienne
+  permissions:
+  - repo: mne-icalabel
+    role: read
+
+- name: mne-nirs
+  description: ''
+  members:
+  - agramfort
+  - rob-luke
+  permissions:
+  - repo: mne-nirs
+    role: maintain
+
+- name: MNE-Python Emeriti
+  description: Past maintainers of MNE-Python. Thank you for all your contributions!
+  members:
+  - adam2392
+  - alexrockhill
+  - bloyl
+  - choldgraf
+  - christianbrodbeck
+  - dengemann
+  - drammock
+  - GuillaumeFavelier
+  - hoechenberger
+  - jaeilepp
+  - jasmainak
+  - jona-sassenhagen
+  - kingjr
+  - massich
+  - mmagnuski
+  - rgoj
+  - rob-luke
+  - teonbrooks
+
+- name: MNE-Python Maintainers
+  description: Have write access
+  members:
+  - agramfort
+  - britta-wstnr
+  - CarinaFo
+  - cbrnr
+  - drammock
+  - larsoner
+  - mscheltienne
+  - nordme
+  - sappelhoff
+  - scott-huberty
+  - tsbinns
+  - wmvanvliet
+  permissions:
+  - repo: mne-python
+    role: write
+  - repo: mne-qt-browser
+    role: read
+
+- name: mne-qt-browser admin
+  description: ''
+  members:
+  - agramfort
+  - cbrnr
+  - drammock
+  - hoechenberger
+  - larsoner
+  - marsipu
+  - mscheltienne
+  permissions:
+  - repo: mne-qt-browser
+    role: maintain
+
+- name: mne-r admin
+  description: Admin for MNE-R
+  members:
+  - dengemann
+  - larsoner
+  permissions:
+  - repo: mne-r
+    role: admin
+
+- name: mne-realtime
+  description: mne-realtime maintainers
+  members:
+  - jasmainak
+  - larsoner
+  - teonbrooks
+  permissions:
+  - repo: mne-realtime
+    role: admin
+
+- name: mne-twitter
+  description: ''
+  members:
+  - larsoner
+  - mne-bot
+  permissions:
+  - repo: mne-python
+    role: read
+
+- name: Read-write
+  description: Read-write group for MNE repos
+  members:
+  - larsoner
+  - mne-bot
+  permissions:
+  - repo: mne-bids
+    role: maintain
+  - repo: mne-bids-pipeline
+    role: maintain
+  - repo: mne-connectivity
+    role: maintain
+  - repo: mne-gui-addons
+    role: maintain
+  - repo: mne-installers
+    role: maintain
+  - repo: mne-nirs
+    role: maintain
+  - repo: mne-python
+    role: maintain
+  - repo: mne-qt-browser
+    role: maintain
+  - repo: mne-realtime
+    role: maintain
+
