@@ -1,29 +1,52 @@
 - name: Auxiliary
   description: For people in auxiliary support roles (e.g., payment)
   members:
-  - thclarkuw
-  permissions:
-  - repo: mne-python
-    role: read
+  - thclarkuw  # for CircleCI billing
 
-- name: mne-bids
+- name: mne-bids maintainers
   description: For pinging MNE-BIDS contributors
   members:
+  - adam2392
   - agramfort
   - drammock
   - jasmainak
   - larsoner
   - sappelhoff
+  - scott-huberty
+  - teonbrooks
   - wmvanvliet
+  permissions:
+  - repo: mne-bids
+    role: maintain
 
-- name: mne-bids-pipeline admin
+- name: mne-bids-pipeline collaborators
+  description: ''
+  members:
+  - SophieHerbst
+  permissions:
+  - repo: mne-bids-pipeline
+    role: write
+
+- name: mne-bids-pipeline maintainers
   description: ''
   members:
   - larsoner
+  - dengemann
   - drammock
+  - sappelhoff
+  - jasmainak
   permissions:
   - repo: mne-bids-pipeline
     role: maintain
+
+- name: mne-cpp collaborators
+  description: ''
+  members:
+  - gabrielbmotta
+  - juangpc
+  permissions:
+  - repo: mne-cpp
+    role: write
 
 - name: mne-cpp admins
   description: ''
@@ -36,7 +59,7 @@
   - repo: mne-cpp-presentations
     role: admin
 
-- name: mne-denoise admin
+- name: mne-denoise maintainers
   description: ''
   members:
   - BabaSanfour
@@ -56,7 +79,17 @@
   - repo: mne-emg
     role: maintain
 
-- name: mne-hcp admin
+- name: mne-hcp collaborators
+  description: ''
+  members:
+  - banilo
+  - jasmainak
+  - jona-sassenhagen
+  permissions:
+  - repo: mne-hcp
+    role: write
+
+- name: mne-hcp maintainers
   description: ''
   members:
   - dengemann
@@ -65,7 +98,18 @@
   - repo: mne-hcp
     role: maintain
 
-- name: mne-hfo admin
+- name: mne-hfo collaborators
+  description: ''
+  members:
+  - dehrens
+  - gkamali
+  - kristinmg
+  - pmyers16
+  permissions:
+  - repo: mne-hfo
+    role: write
+
+- name: mne-hfo maintainers
   description: ''
   members:
   - adam2392
@@ -74,7 +118,7 @@
   - repo: mne-hfo
     role: maintain
 
-- name: mne-icalabel admins
+- name: mne-icalabel maintainers
   description: ''
   members:
   - adam2392
@@ -86,7 +130,23 @@
   - repo: mne-icalabel
     role: maintain
 
-- name: mne-nirs
+- name: mne-lsl admins
+  description: ''
+  members:
+  - mscheltienne
+  permissions:
+  - repo: mne-lsl
+    role: admin
+
+- name: mne-nirs collaborators
+  description: ''
+  members:
+  - florin-pop
+  permissions:
+  - repo: mne-nirs
+    role: write
+
+- name: mne-nirs maintainers
   description: ''
   members:
   - larsoner
@@ -136,7 +196,7 @@
   - repo: mne-python
     role: maintain
 
-- name: mne-qt-browser admin
+- name: mne-qt-browser maintainers
   description: ''
   members:
   - agramfort
@@ -149,8 +209,8 @@
   - repo: mne-qt-browser
     role: maintain
 
-- name: mne-r admin
-  description: Admin for MNE-R
+- name: mne-r maintainers
+  description: ''
   members:
   - dengemann
   - larsoner
@@ -158,8 +218,8 @@
   - repo: mne-r
     role: maintain
 
-- name: mne-realtime
-  description: mne-realtime maintainers
+- name: mne-realtime maintainers
+  description: ''
   members:
   - jasmainak
   - larsoner
@@ -191,4 +251,3 @@
     role: maintain
   - repo: mne-realtime
     role: maintain
-
