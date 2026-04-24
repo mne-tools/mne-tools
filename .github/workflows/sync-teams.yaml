@@ -1,0 +1,21 @@
+name: Teams
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync_teams:
+    name: Sync
+    runs-on: ubuntu-latest
+    environment:
+        name: sync-teams
+    steps:
+      - name: Checkout teams list
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - uses: scientific-python/sync-teams-action@main
+        with:
+          token: ${{ secrets.SYNC_TEAMS_TOKEN }}
