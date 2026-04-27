@@ -1,5 +1,5 @@
 name: Teams
-on:
+on:  # yamllint disable-line rule:truthy
   push:
     branches:
       - main
@@ -8,14 +8,16 @@ jobs:
   sync_teams:
     name: Sync
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment:
-        name: sync-teams
+      name: sync-teams
     steps:
       - name: Checkout teams list
         uses: actions/checkout@v3
         with:
           ref: main
 
-      - uses: scientific-python/sync-teams-action@main
+      - uses: drammock/sync-teams-action@path
         with:
           token: ${{ secrets.SYNC_TEAMS_TOKEN }}
+          yamlpath: admin/teams.yaml

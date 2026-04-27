@@ -251,3 +251,5 @@
     role: maintain
   - repo: mne-realtime
     role: maintain
+  - repo: mne-tools
+    role: maintain
