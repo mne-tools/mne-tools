@@ -3,7 +3,7 @@
   members:
   - thclarkuw  # for CircleCI billing
 
-- name: mne-bids maintainers
+- name: MNE-BIDS Maintainers
   description: For pinging MNE-BIDS contributors
   members:
   - adam2392
@@ -19,7 +19,7 @@
   - repo: mne-bids
     role: maintain
 
-- name: mne-bids-pipeline collaborators
+- name: MNE-BIDS-Pipeline Collaborators
   description: ''
   members:
   - SophieHerbst
@@ -27,7 +27,7 @@
   - repo: mne-bids-pipeline
     role: write
 
-- name: mne-bids-pipeline maintainers
+- name: MNE-BIDS-Pipeline Maintainers
   description: ''
   members:
   - larsoner
@@ -39,16 +39,7 @@
   - repo: mne-bids-pipeline
     role: maintain
 
-- name: mne-cpp collaborators
-  description: ''
-  members:
-  - gabrielbmotta
-  - juangpc
-  permissions:
-  - repo: mne-cpp
-    role: write
-
-- name: mne-cpp admins
+- name: MNE-CPP Admins
   description: ''
   members:
   - chdinh
@@ -59,7 +50,16 @@
   - repo: mne-cpp-presentations
     role: admin
 
-- name: mne-denoise maintainers
+- name: MNE-CPP Collaborators
+  description: ''
+  members:
+  - gabrielbmotta
+  - juangpc
+  permissions:
+  - repo: mne-cpp
+    role: write
+
+- name: MNE-Denoise Maintainers
   description: ''
   members:
   - BabaSanfour
@@ -70,7 +70,7 @@
   - repo: mne-denoise
     role: maintain
 
-- name: MNE-EMG maintainers
+- name: MNE-EMG Maintainers
   description: ''
   members:
   - drammock
@@ -79,7 +79,7 @@
   - repo: mne-emg
     role: maintain
 
-- name: mne-hcp collaborators
+- name: MNE-HCP Collaborators
   description: ''
   members:
   - banilo
@@ -89,7 +89,7 @@
   - repo: mne-hcp
     role: write
 
-- name: mne-hcp maintainers
+- name: MNE-HCP Maintainers
   description: ''
   members:
   - dengemann
@@ -98,7 +98,7 @@
   - repo: mne-hcp
     role: maintain
 
-- name: mne-hfo collaborators
+- name: MNE-HFO Collaborators
   description: ''
   members:
   - dehrens
@@ -109,7 +109,7 @@
   - repo: mne-hfo
     role: write
 
-- name: mne-hfo maintainers
+- name: MNE-HFO Maintainers
   description: ''
   members:
   - adam2392
@@ -118,7 +118,7 @@
   - repo: mne-hfo
     role: maintain
 
-- name: mne-icalabel maintainers
+- name: MNE-ICALabel Maintainers
   description: ''
   members:
   - adam2392
@@ -130,7 +130,7 @@
   - repo: mne-icalabel
     role: maintain
 
-- name: mne-lsl admins
+- name: MNE-LSL Admins
   description: ''
   members:
   - mscheltienne
@@ -138,7 +138,7 @@
   - repo: mne-lsl
     role: admin
 
-- name: mne-nirs collaborators
+- name: MNE-NIRS Collaborators
   description: ''
   members:
   - florin-pop
@@ -146,7 +146,7 @@
   - repo: mne-nirs
     role: write
 
-- name: mne-nirs maintainers
+- name: MNE-NIRS Maintainers
   description: ''
   members:
   - larsoner
@@ -156,7 +156,7 @@
     role: maintain
 
 - name: MNE-Python Emeriti
-  description: Past maintainers of MNE-Python. Thank you for all your contributions!
+  description: Past Maintainers of MNE-Python. Thank you for all your contributions!
   members:
   - adam2392
   - alexrockhill
@@ -196,7 +196,7 @@
   - repo: mne-python
     role: maintain
 
-- name: mne-qt-browser maintainers
+- name: MNE-Qt-Browser Maintainers
   description: ''
   members:
   - agramfort
@@ -209,7 +209,7 @@
   - repo: mne-qt-browser
     role: maintain
 
-- name: mne-r maintainers
+- name: MNE-R Maintainers
   description: ''
   members:
   - dengemann
@@ -218,7 +218,7 @@
   - repo: mne-r
     role: maintain
 
-- name: mne-realtime maintainers
+- name: MNE-Realtime Maintainers
   description: ''
   members:
   - jasmainak
@@ -228,7 +228,7 @@
   - repo: mne-realtime
     role: maintain
 
-- name: mne-bot
+- name: MNE-bot
   description: ''
   members:
   - mne-bot
