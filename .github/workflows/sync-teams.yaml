@@ -1,5 +1,5 @@
 name: Teams
-on:
+on:  # yamllint disable-line rule:truthy
   push:
     branches:
       - main
@@ -8,6 +8,7 @@ jobs:
   sync_teams:
     name: Sync
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment:
       name: sync-teams
     steps:
