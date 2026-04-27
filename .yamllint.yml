@@ -1,0 +1,11 @@
+extends: default
+
+rules:
+  line-length: disable
+  document-start: disable
+  new-lines:
+    type: platform
+  indentation:
+    ignore: |
+      # TODO: Should fix this!
+      /admin/teams.yaml
