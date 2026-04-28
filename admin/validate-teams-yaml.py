@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from yaml import safe_load
 
 with open("teams.yaml") as fid:
