@@ -3,6 +3,33 @@
   members:
   - thclarkuw  # for CircleCI billing
 
+- name: Curry-Python-Reader Maintainers
+  description: ''
+  members:
+  - dominikwelke
+  - drammock
+  permissions:
+  - repo: curry-python-reader
+    role: maintain
+
+- name: Dipole-Simulator Maintainers
+  description: ''
+  members:
+  - agramfort
+  permissions:
+  - repo: dipole-simulator
+    role: maintain
+
+- name: FIFF-Constants Maintainers
+  description: ''
+  members:
+  - jnenonen
+  - mkajola
+  - larsoner
+  permissions:
+  - repo: fiff-constants
+    role: maintain
+
 - name: MNE-BIDS Maintainers
   description: For pinging MNE-BIDS contributors
   members:
@@ -17,6 +44,8 @@
   - wmvanvliet
   permissions:
   - repo: mne-bids
+    role: maintain
+  - repo: mne-bids-app
     role: maintain
 
 - name: MNE-BIDS-Pipeline Collaborators
@@ -39,6 +68,17 @@
   - repo: mne-bids-pipeline
     role: maintain
 
+- name: MNE-Connectivity Maintainers
+  description: ''
+  members:
+  - adam2392
+  - britta-wstnr
+  - tsbinns
+  - wmvanvliet
+  permissions:
+  - repo: mne-connectivity
+    role: maintain
+
 - name: MNE-CPP Admins
   description: ''
   members:
@@ -49,6 +89,8 @@
     role: admin
   - repo: mne-cpp-presentations
     role: admin
+  - repo: mne-cpp-test-data
+    role: admin
 
 - name: MNE-CPP Collaborators
   description: ''
@@ -58,6 +100,15 @@
   permissions:
   - repo: mne-cpp
     role: write
+
+- name: MNE-Dash Maintainers
+  description: ''
+  members:
+  - scott-huberty
+  - SherazKhan
+  permissions:
+  - repo: mne-dash
+    role: maintain
 
 - name: MNE-Denoise Maintainers
   description: ''
@@ -70,6 +121,14 @@
   - repo: mne-denoise
     role: maintain
 
+- name: MNE-Docker Maintainers
+  description: ''
+  members:
+  - larsoner
+  permissions:
+  - repo: mne-docker
+    role: maintain
+
 - name: MNE-EMG Maintainers
   description: ''
   members:
@@ -77,6 +136,23 @@
   - pranavm19
   permissions:
   - repo: mne-emg
+    role: maintain
+
+- name: MNE-Features Maintainers
+  description: ''
+  members:
+  - jbschiratti
+  - rcmdnk
+  permissions:
+  - repo: mne-features
+    role: maintain
+
+- name: MNE-GUI-Addons Maintainers
+  description: ''
+  members:
+  - alexrockhill
+  permissions:
+  - repo: mne-gui-addons
     role: maintain
 
 - name: MNE-HCP Collaborators
@@ -130,6 +206,30 @@
   - repo: mne-icalabel
     role: maintain
 
+- name: MNE-Incubator Maintainers
+  description: ''
+  members:
+  - wmvanvliet
+  permissions:
+  - repo: mne-incubator
+    role: maintain
+
+- name: MNE-Installers Collaborators
+  description: ''
+  members:
+  - cbrnr
+  permissions:
+  - repo: mne-installers
+    role: write
+
+- name: MNE-KIT-GUI Maintainers
+  description: ''
+  members:
+  - larsoner
+  permissions:
+  - repo: mne-kit-gui
+    role: maintain
+
 - name: MNE-LSL Admins
   description: ''
   members:
@@ -137,6 +237,15 @@
   permissions:
   - repo: mne-lsl
     role: admin
+
+- name: MNE-MATLAB Maintainers
+  description: ''
+  members:
+  - schoffelen
+  - larsoner
+  permissions:
+  - repo: mne-matlab
+    role: maintain
 
 - name: MNE-NIRS Collaborators
   description: ''
@@ -226,6 +335,23 @@
   - teonbrooks
   permissions:
   - repo: mne-realtime
+    role: maintain
+
+- name: MNE-RSA Admins
+  description: ''
+  members:
+  - wmvanvliet
+  permissions:
+  - repo: mne-rsa
+    role: admin
+
+- name: Neuromag-LSL Maintainers
+  description: ''
+  members:
+  - LauriParkkonen
+  - mscheltienne
+  permissions:
+  - repo: neuromag-lsl
     role: maintain
 
 - name: MNE-bot
