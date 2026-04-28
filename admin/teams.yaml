@@ -264,15 +264,6 @@
   - repo: mne-nirs
     role: maintain
 
-- name: MNE-OpenMEEG Maintainers
-  description: ''
-  members:
-  - agramfort
-  - larsoner
-  permissions:
-  - repo: mne-openmeeg
-    role: maintain
-
 - name: MNE-Python Emeriti
   description: Past Maintainers of MNE-Python. Thank you for all your contributions!
   members:
@@ -353,16 +344,6 @@
   permissions:
   - repo: mne-rsa
     role: admin
-
-- name: MNE-Testing/Misc-Data Collaborators
-  description: ''
-  members:
-  - rob-luke
-  permissions:
-  - repo: mne-misc-data
-    role: write
-  - repo: mne-testing-data
-    role: write
 
 - name: Neuromag-LSL Maintainers
   description: ''
