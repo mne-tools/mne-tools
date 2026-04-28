@@ -27,7 +27,6 @@ multi_repo_teams = {
     "MNE-BIDS Maintainers",  # MNE-BIDS and MNE-BIDS-app
     "MNE-bot",
     "MNE-CPP Admins",
-    "MNE-Testing/Misc-Data Collaborators",
 }
 
 # other exceptions from our standard team naming convention (`Repo-Name mapping[role]`):
