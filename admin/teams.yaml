@@ -25,6 +25,7 @@
   members:
   - jnenonen
   - mkajola
+  - larsoner
   permissions:
   - repo: fiff-constants
     role: maintain
@@ -123,8 +124,7 @@
 - name: MNE-Docker Maintainers
   description: ''
   members:
-  - rob-luke
-  - SherazKhan
+  - larsoner
   permissions:
   - repo: mne-docker
     role: maintain
@@ -209,7 +209,6 @@
 - name: MNE-Incubator Maintainers
   description: ''
   members:
-  - dengemann
   - wmvanvliet
   permissions:
   - repo: mne-incubator
@@ -219,8 +218,6 @@
   description: ''
   members:
   - cbrnr
-  - marsipu
-  - rob-luke
   permissions:
   - repo: mne-installers
     role: write
@@ -245,6 +242,7 @@
   description: ''
   members:
   - schoffelen
+  - larsoner
   permissions:
   - repo: mne-matlab
     role: maintain
