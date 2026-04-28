@@ -17,7 +17,7 @@ jobs:
         with:
           ref: main
 
-      - uses: drammock/sync-teams-action@path
+      - uses: scientific-python/sync-teams-action@main
         with:
           token: ${{ secrets.SYNC_TEAMS_TOKEN }}
           yamlpath: admin/teams.yaml
