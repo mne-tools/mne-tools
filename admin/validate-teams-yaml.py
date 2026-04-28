@@ -1,7 +1,9 @@
 #!/usr/bin/env python
+from pathlib import Path
+
 from yaml import safe_load
 
-with open("teams.yaml") as fid:
+with open(Path(__file__).parent / "teams.yaml") as fid:
     doc = safe_load(fid)
 
 # mapping from permission roles to what we call them in the team names
