@@ -5,3 +5,11 @@ repos:
     hooks:
       - id: yamllint
         args: [--strict, -c, .yamllint.yml]
+  # validate admin/teams.yaml
+  - repo: local
+    hooks:
+      - id: validate-teams-yaml
+        name: Validate team names and permissions in admin/teams.yaml
+        language: python
+        entry: ./admin/validate-teams-yaml.py
+        files: '^admin/teams.yaml$'
