@@ -79,18 +79,18 @@
   - repo: mne-connectivity
     role: maintain
 
-- name: MNE-CPP Admins
+- name: MNE-CPP Maintainers
   description: ''
   members:
   - chdinh
   - LorenzE
   permissions:
   - repo: mne-cpp
-    role: admin
+    role: maintain
   - repo: mne-cpp-presentations
-    role: admin
+    role: maintain
   - repo: mne-cpp-test-data
-    role: admin
+    role: maintain
 
 - name: MNE-CPP Collaborators
   description: ''
@@ -230,13 +230,13 @@
   - repo: mne-kit-gui
     role: maintain
 
-- name: MNE-LSL Admins
+- name: MNE-LSL Maintainers
   description: ''
   members:
   - mscheltienne
   permissions:
   - repo: mne-lsl
-    role: admin
+    role: maintain
 
 - name: MNE-MATLAB Maintainers
   description: ''
@@ -337,13 +337,13 @@
   - repo: mne-realtime
     role: maintain
 
-- name: MNE-RSA Admins
+- name: MNE-RSA Maintainers
   description: ''
   members:
   - wmvanvliet
   permissions:
   - repo: mne-rsa
-    role: admin
+    role: maintain
 
 - name: Neuromag-LSL Maintainers
   description: ''
