@@ -345,15 +345,6 @@
   - repo: mne-rsa
     role: maintain
 
-- name: Neuromag-LSL Maintainers
-  description: ''
-  members:
-  - LauriParkkonen
-  - mscheltienne
-  permissions:
-  - repo: neuromag-lsl
-    role: maintain
-
 - name: MNE-bot
   description: ''
   members:
