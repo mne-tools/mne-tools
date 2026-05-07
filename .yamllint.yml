@@ -5,6 +5,3 @@ rules:
   document-start: disable
   new-lines:
     type: platform
-  indentation:
-    spaces: 2
-    indent-sequences: false

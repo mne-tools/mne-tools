@@ -1,372 +1,372 @@
 - name: Auxiliary
   description: For people in auxiliary support roles (e.g., payment)
   members:
-  - thclarkuw  # for CircleCI billing
+    - thclarkuw  # for CircleCI billing
 
 - name: Curry-Python-Reader Maintainers
   description: ''
   members:
-  - dominikwelke
-  - drammock
+    - dominikwelke
+    - drammock
   permissions:
-  - repo: curry-python-reader
-    role: maintain
+    - repo: curry-python-reader
+      role: maintain
 
 - name: Dipole-Simulator Maintainers
   description: ''
   members:
-  - agramfort
+    - agramfort
   permissions:
-  - repo: dipole-simulator
-    role: maintain
+    - repo: dipole-simulator
+      role: maintain
 
 - name: FIFF-Constants Maintainers
   description: ''
   members:
-  - jnenonen
-  - mkajola
-  - larsoner
+    - jnenonen
+    - mkajola
+    - larsoner
   permissions:
-  - repo: fiff-constants
-    role: maintain
+    - repo: fiff-constants
+      role: maintain
 
 - name: MNE-BIDS Maintainers
   description: ''
   members:
-  - adam2392
-  - agramfort
-  - drammock
-  - jasmainak
-  - larsoner
-  - sappelhoff
-  - scott-huberty
-  - teonbrooks
-  - wmvanvliet
+    - adam2392
+    - agramfort
+    - drammock
+    - jasmainak
+    - larsoner
+    - sappelhoff
+    - scott-huberty
+    - teonbrooks
+    - wmvanvliet
   permissions:
-  - repo: mne-bids
-    role: maintain
-  - repo: mne-bids-app
-    role: maintain
+    - repo: mne-bids
+      role: maintain
+    - repo: mne-bids-app
+      role: maintain
 
 - name: MNE-BIDS-Pipeline Collaborators
   description: ''
   members:
-  - SophieHerbst
+    - SophieHerbst
   permissions:
-  - repo: mne-bids-pipeline
-    role: write
+    - repo: mne-bids-pipeline
+      role: write
 
 - name: MNE-BIDS-Pipeline Maintainers
   description: ''
   members:
-  - larsoner
-  - dengemann
-  - drammock
-  - sappelhoff
-  - jasmainak
+    - larsoner
+    - dengemann
+    - drammock
+    - sappelhoff
+    - jasmainak
   permissions:
-  - repo: mne-bids-pipeline
-    role: maintain
+    - repo: mne-bids-pipeline
+      role: maintain
 
 - name: MNE-Connectivity Maintainers
   description: ''
   members:
-  - adam2392
-  - britta-wstnr
-  - tsbinns
-  - wmvanvliet
+    - adam2392
+    - britta-wstnr
+    - tsbinns
+    - wmvanvliet
   permissions:
-  - repo: mne-connectivity
-    role: maintain
+    - repo: mne-connectivity
+      role: maintain
 
 - name: MNE-CPP Maintainers
   description: ''
   members:
-  - chdinh
-  - LorenzE
+    - chdinh
+    - LorenzE
   permissions:
-  - repo: mne-cpp
-    role: maintain
-  - repo: mne-cpp-presentations
-    role: maintain
-  - repo: mne-cpp-test-data
-    role: maintain
+    - repo: mne-cpp
+      role: maintain
+    - repo: mne-cpp-presentations
+      role: maintain
+    - repo: mne-cpp-test-data
+      role: maintain
 
 - name: MNE-CPP Collaborators
   description: ''
   members:
-  - gabrielbmotta
-  - juangpc
+    - gabrielbmotta
+    - juangpc
   permissions:
-  - repo: mne-cpp
-    role: write
+    - repo: mne-cpp
+      role: write
 
 - name: MNE-Dash Maintainers
   description: ''
   members:
-  - scott-huberty
-  - SherazKhan
+    - scott-huberty
+    - SherazKhan
   permissions:
-  - repo: mne-dash
-    role: maintain
+    - repo: mne-dash
+      role: maintain
 
 - name: MNE-Denoise Maintainers
   description: ''
   members:
-  - BabaSanfour
-  - drammock
-  - larsoner
-  - snesmaeili
+    - BabaSanfour
+    - drammock
+    - larsoner
+    - snesmaeili
   permissions:
-  - repo: mne-denoise
-    role: maintain
+    - repo: mne-denoise
+      role: maintain
 
 - name: MNE-Docker Maintainers
   description: ''
   members:
-  - larsoner
+    - larsoner
   permissions:
-  - repo: mne-docker
-    role: maintain
+    - repo: mne-docker
+      role: maintain
 
 - name: MNE-EMG Maintainers
   description: ''
   members:
-  - drammock
-  - pranavm19
+    - drammock
+    - pranavm19
   permissions:
-  - repo: mne-emg
-    role: maintain
+    - repo: mne-emg
+      role: maintain
 
 - name: MNE-Features Maintainers
   description: ''
   members:
-  - jbschiratti
-  - rcmdnk
+    - jbschiratti
+    - rcmdnk
   permissions:
-  - repo: mne-features
-    role: maintain
+    - repo: mne-features
+      role: maintain
 
 - name: MNE-GUI-Addons Maintainers
   description: ''
   members:
-  - alexrockhill
+    - alexrockhill
   permissions:
-  - repo: mne-gui-addons
-    role: maintain
+    - repo: mne-gui-addons
+      role: maintain
 
 - name: MNE-HCP Collaborators
   description: ''
   members:
-  - banilo
-  - jasmainak
-  - jona-sassenhagen
+    - banilo
+    - jasmainak
+    - jona-sassenhagen
   permissions:
-  - repo: mne-hcp
-    role: write
+    - repo: mne-hcp
+      role: write
 
 - name: MNE-HCP Maintainers
   description: ''
   members:
-  - dengemann
-  - larsoner
+    - dengemann
+    - larsoner
   permissions:
-  - repo: mne-hcp
-    role: maintain
+    - repo: mne-hcp
+      role: maintain
 
 - name: MNE-HFO Collaborators
   description: ''
   members:
-  - dehrens
-  - gkamali
-  - kristinmg
-  - pmyers16
+    - dehrens
+    - gkamali
+    - kristinmg
+    - pmyers16
   permissions:
-  - repo: mne-hfo
-    role: write
+    - repo: mne-hfo
+      role: write
 
 - name: MNE-HFO Maintainers
   description: ''
   members:
-  - adam2392
-  - larsoner
+    - adam2392
+    - larsoner
   permissions:
-  - repo: mne-hfo
-    role: maintain
+    - repo: mne-hfo
+      role: maintain
 
 - name: MNE-ICALabel Maintainers
   description: ''
   members:
-  - adam2392
-  - agramfort
-  - anandsaini024
-  - jacobf18
-  - mscheltienne
+    - adam2392
+    - agramfort
+    - anandsaini024
+    - jacobf18
+    - mscheltienne
   permissions:
-  - repo: mne-icalabel
-    role: maintain
+    - repo: mne-icalabel
+      role: maintain
 
 - name: MNE-Incubator Maintainers
   description: ''
   members:
-  - wmvanvliet
+    - wmvanvliet
   permissions:
-  - repo: mne-incubator
-    role: maintain
+    - repo: mne-incubator
+      role: maintain
 
 - name: MNE-Installers Collaborators
   description: ''
   members:
-  - cbrnr
+    - cbrnr
   permissions:
-  - repo: mne-installers
-    role: write
+    - repo: mne-installers
+      role: write
 
 - name: MNE-KIT-GUI Maintainers
   description: ''
   members:
-  - larsoner
+    - larsoner
   permissions:
-  - repo: mne-kit-gui
-    role: maintain
+    - repo: mne-kit-gui
+      role: maintain
 
 - name: MNE-LSL Maintainers
   description: ''
   members:
-  - mscheltienne
+    - mscheltienne
   permissions:
-  - repo: mne-lsl
-    role: maintain
+    - repo: mne-lsl
+      role: maintain
 
 - name: MNE-MATLAB Maintainers
   description: ''
   members:
-  - schoffelen
-  - larsoner
+    - schoffelen
+    - larsoner
   permissions:
-  - repo: mne-matlab
-    role: maintain
+    - repo: mne-matlab
+      role: maintain
 
 - name: MNE-NIRS Collaborators
   description: ''
   members:
-  - florin-pop
+    - florin-pop
   permissions:
-  - repo: mne-nirs
-    role: write
+    - repo: mne-nirs
+      role: write
 
 - name: MNE-NIRS Maintainers
   description: ''
   members:
-  - larsoner
-  - rob-luke
+    - larsoner
+    - rob-luke
   permissions:
-  - repo: mne-nirs
-    role: maintain
+    - repo: mne-nirs
+      role: maintain
 
 - name: MNE-Python Emeriti
   description: Past Maintainers of MNE-Python. Thank you for all your contributions!
   members:
-  - adam2392
-  - alexrockhill
-  - bloyl
-  - choldgraf
-  - christianbrodbeck
-  - dengemann
-  - drammock
-  - GuillaumeFavelier
-  - hoechenberger
-  - jaeilepp
-  - jasmainak
-  - jona-sassenhagen
-  - kingjr
-  - massich
-  - mmagnuski
-  - rgoj
-  - rob-luke
-  - teonbrooks
+    - adam2392
+    - alexrockhill
+    - bloyl
+    - choldgraf
+    - christianbrodbeck
+    - dengemann
+    - drammock
+    - GuillaumeFavelier
+    - hoechenberger
+    - jaeilepp
+    - jasmainak
+    - jona-sassenhagen
+    - kingjr
+    - massich
+    - mmagnuski
+    - rgoj
+    - rob-luke
+    - teonbrooks
 
 - name: MNE-Python Maintainers
   description: ''
   members:
-  - agramfort
-  - britta-wstnr
-  - CarinaFo
-  - cbrnr
-  - drammock
-  - larsoner
-  - mscheltienne
-  - nordme
-  - sappelhoff
-  - scott-huberty
-  - tsbinns
-  - wmvanvliet
+    - agramfort
+    - britta-wstnr
+    - CarinaFo
+    - cbrnr
+    - drammock
+    - larsoner
+    - mscheltienne
+    - nordme
+    - sappelhoff
+    - scott-huberty
+    - tsbinns
+    - wmvanvliet
   permissions:
-  - repo: mne-python
-    role: maintain
+    - repo: mne-python
+      role: maintain
 
 - name: MNE-Qt-Browser Maintainers
   description: ''
   members:
-  - agramfort
-  - cbrnr
-  - drammock
-  - larsoner
-  - marsipu
-  - mscheltienne
+    - agramfort
+    - cbrnr
+    - drammock
+    - larsoner
+    - marsipu
+    - mscheltienne
   permissions:
-  - repo: mne-qt-browser
-    role: maintain
+    - repo: mne-qt-browser
+      role: maintain
 
 - name: MNE-R Maintainers
   description: ''
   members:
-  - dengemann
-  - larsoner
+    - dengemann
+    - larsoner
   permissions:
-  - repo: mne-r
-    role: maintain
+    - repo: mne-r
+      role: maintain
 
 - name: MNE-Realtime Maintainers
   description: ''
   members:
-  - jasmainak
-  - larsoner
-  - teonbrooks
+    - jasmainak
+    - larsoner
+    - teonbrooks
   permissions:
-  - repo: mne-realtime
-    role: maintain
+    - repo: mne-realtime
+      role: maintain
 
 - name: MNE-RSA Maintainers
   description: ''
   members:
-  - wmvanvliet
+    - wmvanvliet
   permissions:
-  - repo: mne-rsa
-    role: maintain
+    - repo: mne-rsa
+      role: maintain
 
 - name: MNE-bot
   description: ''
   members:
-  - mne-bot
+    - mne-bot
   permissions:
-  - repo: mne-bids
-    role: maintain
-  - repo: mne-bids-pipeline
-    role: maintain
-  - repo: mne-connectivity
-    role: maintain
-  - repo: mne-gui-addons
-    role: maintain
-  - repo: mne-installers
-    role: maintain
-  - repo: mne-nirs
-    role: maintain
-  - repo: mne-python
-    role: maintain
-  - repo: mne-qt-browser
-    role: maintain
-  - repo: mne-realtime
-    role: maintain
-  - repo: mne-tools
-    role: maintain
+    - repo: mne-bids
+      role: maintain
+    - repo: mne-bids-pipeline
+      role: maintain
+    - repo: mne-connectivity
+      role: maintain
+    - repo: mne-gui-addons
+      role: maintain
+    - repo: mne-installers
+      role: maintain
+    - repo: mne-nirs
+      role: maintain
+    - repo: mne-python
+      role: maintain
+    - repo: mne-qt-browser
+      role: maintain
+    - repo: mne-realtime
+      role: maintain
+    - repo: mne-tools
+      role: maintain
