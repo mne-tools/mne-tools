@@ -16,8 +16,15 @@ jobs:
         uses: actions/checkout@v6
         with:
           ref: main
-
+      - name: Check for changes to teams.yaml
+        id: teams_dirty
+        run: |
+          git diff admin/teams.yaml
+          if ! [[ $(git diff -s --exit-code admin/teams.yaml) ]]; then
+            echo "dirty=true" >> $GITHUB_OUTPUT
+          fi
       - uses: scientific-python/sync-teams-action@main
         with:
           token: ${{ secrets.SYNC_TEAMS_TOKEN }}
           yamlpath: admin/teams.yaml
+        if: steps.teams_dirty.outputs.dirty == 'true'
