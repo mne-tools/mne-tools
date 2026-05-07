@@ -12,7 +12,7 @@ jobs:
     environment:
       name: sync-teams
     steps:
-      - name: Checkout teams list
+      - name: Checkout repo
         uses: actions/checkout@v6
         with:
           ref: main
