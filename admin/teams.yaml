@@ -210,7 +210,6 @@
   description: ''
   members:
     - wmvanvliet
-    - drammock
   permissions:
     - repo: mne-incubator
       role: maintain

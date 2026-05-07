@@ -15,12 +15,11 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v6
         with:
-          ref: main
+          fetch-depth: 2
       - name: Check for changes to teams.yaml
         id: teams_dirty
         run: |
-          git diff admin/teams.yaml
-          if ! [[ $(git diff -s --exit-code admin/teams.yaml) ]]; then
+          if ! $(git diff --quiet HEAD^ HEAD admin/teams.yaml); then
             echo "dirty=true" >> $GITHUB_OUTPUT
           fi
       - uses: scientific-python/sync-teams-action@main
