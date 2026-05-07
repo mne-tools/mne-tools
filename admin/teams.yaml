@@ -31,7 +31,7 @@
     role: maintain
 
 - name: MNE-BIDS Maintainers
-  description: For pinging MNE-BIDS contributors
+  description: ''
   members:
   - adam2392
   - agramfort
