@@ -7,3 +7,4 @@ rules:
     type: platform
   indentation:
     spaces: 2
+    indent-sequences: false
