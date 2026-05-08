@@ -230,13 +230,13 @@
     - repo: mne-kit-gui
       role: maintain
 
-- name: MNE-LSL Maintainers
+- name: MNE-LSL Admins
   description: ''
   members:
     - mscheltienne
   permissions:
     - repo: mne-lsl
-      role: maintain
+      role: admin
 
 - name: MNE-MATLAB Maintainers
   description: ''
