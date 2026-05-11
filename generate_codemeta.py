@@ -12,12 +12,12 @@ from helpers import check_release_version, get_contributor_names_emails
 
 
 def main():
-    parser = ArgumentParser(description="Generate `CITATION.cff`.")
+    parser = ArgumentParser(description="Generate `codemeta.json`.")
     parser.add_argument(
-        "repo_dir",
+        "project_root",
         type=str,
         default=SUPPRESS,
-        help="The directory of the repository to get the citation information for.",
+        help="The directory of the project to get the codemeta information for.",
     )
     parser.add_argument(
         "package_name",
@@ -112,7 +112,7 @@ def main():
 
     args = parser.parse_args()
     # Required args
-    repo_dir = args.repo_dir
+    project_root = args.project_root
     package_name = args.package_name
     release_version = args.release_version
     package_description = args.package_description
@@ -134,7 +134,7 @@ def main():
 
     # Parse the git shortlog to get the list of authors
     names_emails = get_contributor_names_emails(
-        repo_dir=repo_dir, compound_surnames=compound_surnames
+        repo_dir=project_root, compound_surnames=compound_surnames
     )
 
     # Format author list
@@ -163,7 +163,7 @@ def main():
     operating_systems = '",\n        "'.join(operating_systems)
 
     # Get dependencies and format
-    with open(os.path.join(repo_dir, "pyproject.toml"), "r", encoding="utf-8") as f:
+    with open(os.path.join(project_root, "pyproject.toml"), "r", encoding="utf-8") as f:
         pyproject = tomllib.loads(f.read())
     dependencies = [f"python{pyproject['project']['requires-python']}"]
     dependencies.extend(pyproject["project"]["dependencies"])
@@ -209,7 +209,7 @@ def main():
 
     # Write to file
     with open(
-        os.path.join(repo_dir, "codemeta.json"), "w", encoding="utf-8"
+        os.path.join(project_root, "codemeta.json"), "w", encoding="utf-8"
     ) as codemeta_file:
         codemeta_file.write(codemeta)
 

@@ -13,10 +13,10 @@ from helpers import check_release_version, get_contributor_names_emails
 def main():
     parser = ArgumentParser(description="Generate `CITATION.cff`.")
     parser.add_argument(
-        "repo_dir",
+        "project_root",
         type=str,
         default=SUPPRESS,
-        help="The directory of the repository to get the citation information for.",
+        help="The directory of the project to get the citation information for.",
     )
     parser.add_argument(
         "package_name",
@@ -72,7 +72,7 @@ def main():
 
     args = parser.parse_args()
     # Required args
-    repo_dir = args.repo_dir
+    project_root = args.project_root
     package_name = args.package_name
     release_version = args.release_version
     code_doi = args.code_doi
@@ -87,7 +87,7 @@ def main():
 
     # Parse the git shortlog to get the list of authors
     names_emails = get_contributor_names_emails(
-        repo_dir=repo_dir, compound_surnames=compound_surnames
+        repo_dir=project_root, compound_surnames=compound_surnames
     )
 
     # Format author list
@@ -102,7 +102,7 @@ def main():
 
     # Get the commit info
     commit = subprocess.run(
-        ["git", "-C", repo_dir, "log", "-1", "--pretty=%H"],
+        ["git", "-C", project_root, "log", "-1", "--pretty=%H"],
         capture_output=True,
         text=True,
         check=True,
@@ -143,7 +143,7 @@ authors:
 
     # Write to file
     with open(
-        os.path.join(repo_dir, "CITATION.cff"), "w", encoding="utf-8"
+        os.path.join(project_root, "CITATION.cff"), "w", encoding="utf-8"
     ) as cff_file:
         cff_file.write(citation_cff)
 
