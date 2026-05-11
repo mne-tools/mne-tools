@@ -23,8 +23,7 @@
 - name: FIFF-Constants Maintainers
   description: ''
   members:
-    - jnenonen
-    - mkajola
+    - jonnaglad
     - larsoner
   permissions:
     - repo: fiff-constants
