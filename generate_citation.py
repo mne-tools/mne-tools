@@ -7,7 +7,14 @@ import subprocess
 from argparse import SUPPRESS, ArgumentParser
 from datetime import date
 
-from helpers import check_release_version, get_contributor_names_emails
+import tomllib
+import yaml
+
+from helpers import (
+    check_release_version,
+    get_contributor_names_emails,
+    read_extended_metadata,
+)
 
 
 def main():
@@ -19,37 +26,16 @@ def main():
         help="The directory of the project to get the citation information for.",
     )
     parser.add_argument(
-        "package_name",
+        "metadata_path",
         type=str,
         default=SUPPRESS,
-        help="The name of the software package.",
+        help="The path to a yaml file containing extended package metadata.",
     )
     parser.add_argument(
         "release_version",
         type=str,
         default=SUPPRESS,
         help="The major.minor.micro release version.",
-    )
-    parser.add_argument(
-        "code_doi",
-        type=str,
-        default=SUPPRESS,
-        help="The DOI for the package's code, e.g., on Zenodo.",
-    )
-    parser.add_argument(
-        "keywords",
-        type=str,
-        default=SUPPRESS,
-        help="A list of comma-separated keywords describing the software.",
-    )
-    parser.add_argument(
-        "--compound_surnames",
-        type=str,
-        default=None,
-        help=(
-            "Comma-separated compound surnames to handle when parsing author names in "
-            "from git's shortlog."
-        ),
     )
     parser.add_argument(
         "--release_date",
@@ -60,34 +46,27 @@ def main():
             "date will be used."
         ),
     )
-    parser.add_argument(
-        "--preferred_citation",
-        type=str,
-        default=None,
-        help=(
-            "The preferred citation for the software, in cff format. This should be "
-            "a YAML string that can be directly included in the `CITATION.cff` file."
-        ),
-    )
 
     args = parser.parse_args()
     # Required args
     project_root = args.project_root
-    package_name = args.package_name
+    metadata_path = args.metadata_path
     release_version = args.release_version
-    code_doi = args.code_doi
-    keywords = args.keywords
     # Optional args
-    compound_surnames = args.compound_surnames
     release_date = args.release_date
-    preferred_citation = args.preferred_citation
 
     # Check the release version format
     check_release_version(release_version)
 
+    # Read the package metadata
+    with open(os.path.join(project_root, "pyproject.toml"), "r", encoding="utf-8") as f:
+        pyproject = tomllib.loads(f.read())
+    extended_metadata = read_extended_metadata(metadata_path)
+
     # Parse the git shortlog to get the list of authors
     names_emails = get_contributor_names_emails(
-        repo_dir=project_root, compound_surnames=compound_surnames
+        repo_dir=project_root,
+        compound_surnames=extended_metadata.get("compound_surnames"),
     )
 
     # Format author list
@@ -109,7 +88,7 @@ def main():
     ).stdout.strip()
 
     # Get the message to include
-    if preferred_citation is None:
+    if extended_metadata.get("preferred_citation") is None:
         message = (
             "If you use this software, please cite it using the following information."
         )
@@ -120,19 +99,25 @@ def main():
         )
 
     # Wrap multi-word keywords in quotes and form a bulleted list
-    keywords = [kw.strip() for kw in keywords.split(",")]
+    keywords = [kw.strip() for kw in pyproject["project"]["keywords"].split(",")]
     keywords = (f'"{kw}"' if " " in kw else kw for kw in keywords)
     keywords = "\n".join(f"  - {kw}" for kw in keywords)
+
+    # Get preferred citation
+    if extended_metadata.get("preferred_citation") is not None:
+        preferred_citation = yaml.dump(extended_metadata["preferred_citation"])
+    else:
+        preferred_citation = None
 
     # Assemble the CFF string
     citation_cff = f"""\
 cff-version: 1.2.0
-title: "{package_name}"
+title: "{extended_metadata["package_name"]}"
 message: "{message}"
 version: {release_version}
 date-released: "{release_date}"
 commit: {commit}
-doi: {code_doi}
+doi: {extended_metadata["code_doi"]}
 keywords:
 {keywords}
 authors:

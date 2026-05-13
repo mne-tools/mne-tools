@@ -8,6 +8,7 @@ import subprocess
 
 from packaging.requirements import Requirement
 from tomlkit.toml_file import TOMLFile
+import yaml
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +33,25 @@ def check_release_version(version: str) -> None:
         raise ValueError(bad_version_msg) from error
     if len(split_version) != 3:
         raise ValueError(bad_version_msg)
+
+
+def read_extended_metadata(metadata_path: str) -> dict:
+    """Read extended package metadata from a yaml file.
+
+    Parameters
+    ----------
+    metadata_path : str
+        The path to the package metadata file.
+
+    Returns
+    -------
+    metadata : dict
+        The package metadata.
+    """
+    with open(metadata_path, "r", encoding="utf-8") as f:
+        metadata = yaml.safe_load(f)
+
+    return metadata
 
 
 def get_contributor_names_emails(
