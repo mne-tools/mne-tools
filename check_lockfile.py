@@ -5,7 +5,8 @@
 import os
 from argparse import SUPPRESS, ArgumentParser
 
-from packaging.version import Specifier, Version
+from packaging.version import Version
+from packaging.specifiers import Specifier
 from tomlkit.toml_file import TOMLFile
 
 from helpers import (
@@ -15,6 +16,10 @@ from helpers import (
     get_min_pinned_ver,
     raise_bad_deps_messages,
 )
+
+# Note: This script is meant to work with a uv lockfile and an 'old' environment, i.e.,
+# looks for module versions in the lockfile pinned to the minimum versions in
+# pyproject.toml
 
 
 def main():

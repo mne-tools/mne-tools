@@ -17,6 +17,9 @@ from helpers import (
     raise_bad_deps_messages,
 )
 
+# Note: This script is meant to work with an 'old' environment, i.e., looks for versions
+# of installed modules to match the minimum versions in pyproject.toml
+
 
 def main():
     parser = ArgumentParser(
