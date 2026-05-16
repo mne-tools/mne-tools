@@ -52,8 +52,7 @@ def main():
     check_release_version(release_version)
 
     # Read the package metadata
-    with open(os.path.join(project_root, "pyproject.toml"), "r", encoding="utf-8") as f:
-        pyproject = tomllib.loads(f.read())
+    pyproject = read_pyproject(project_root=project_root)
     extended_metadata = read_extended_metadata(
         os.path.join(project_root, ".extended_metadata.yaml")
     )

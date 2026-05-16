@@ -38,6 +38,25 @@ def check_release_version(version: str) -> None:
         raise ValueError(bad_version_msg)
 
 
+def read_pyproject(project_root: str) -> dict:
+    """Read `pyproject.toml` file.
+
+    Parameters
+    ----------
+    project_root : str
+        The path to the project root directory.
+
+    Returns
+    -------
+    pyproject : dict
+        The `pyproject.toml` contents.
+    """
+    with open(os.path.join(project_root, "pyproject.toml"), "r", encoding="utf-8") as f:
+        pyproject = tomllib.loads(f.read())
+
+    return pyproject
+
+
 def read_extended_metadata(metadata_path: str) -> dict:
     """Read extended package metadata from a yaml file.
 
@@ -162,8 +181,7 @@ def get_deps_to_check(project_root: str, groups: list[str]) -> list[str]:
     check_deps : list of str
         The dependencies whose versions should be checked.
     """
-    pyproject = TOMLFile(os.path.join(project_root, "pyproject.toml"))
-    pyproject_data = pyproject.read()
+    pyproject_data = read_pyproject(project_root=project_root)
     check_deps = [f"python {pyproject_data['project']['requires-python']}"]
     check_deps.extend(pyproject_data["project"]["dependencies"])
     for group in groups:
