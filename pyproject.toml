@@ -12,9 +12,9 @@ test = [
 
 [project]
 dependencies = [
-  "tomlkit",
+  "packaging",
   "pyyaml",
-  "packaging"
+  "requests"
 ]
 description = "Shared tooling for the MNE-Tools org."
 name = "mne-tools"

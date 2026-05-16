@@ -258,3 +258,31 @@ def raise_bad_deps_messages(bad_messages: list[str]):
     bad_messages = [message for message in bad_messages if message != ""]
     if len(bad_messages) > 0:
         raise RuntimeError("\n\n".join(bad_messages))
+
+
+def prettify_pins(req: str | None) -> str:
+    """Make a version specifier pin prettier.
+
+    Parameters
+    ----------
+    req : str or None
+        The dependency specification. If None, an empty string will be returned.
+
+    Returns
+    -------
+    pretty_req : str
+        The prettified dependency specification.
+    """
+    if req is None:
+        return ""
+    reqs = req.split(",")
+    replacements = {
+        "<=": " ≤ ",
+        ">=": " ≥ ",
+        "<": " < ",
+        ">": " > ",
+    }
+    for old, new in replacements.items():
+        reqs = [p.replace(old, new) for p in reqs]
+    reqs = reversed(reqs)
+    return ",".join(reqs)
