@@ -2,20 +2,20 @@
 # License: BSD-3-Clause
 # Copyright the MNE-Tools contributors.
 
+import logging
 import os
 from argparse import SUPPRESS, ArgumentParser
-import logging
 
-from packaging.version import Version
 from packaging.specifiers import Specifier
+from packaging.version import Version
 from tomlkit.toml_file import TOMLFile
 
 from helpers import (
+    IMPORT_MODULE_NAME_MAPPING,
     get_bad_deps_message,
     get_deps_to_check,
     get_min_pinned_ver,
     raise_bad_deps_messages,
-    IMPORT_MODULE_NAME_MAPPING,
 )
 
 logging.basicConfig(level=logging.INFO)

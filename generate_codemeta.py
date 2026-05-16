@@ -6,12 +6,11 @@ import os
 from argparse import SUPPRESS, ArgumentParser
 from datetime import date
 
-import tomllib
-
 from helpers import (
     check_release_version,
     get_contributor_names_emails,
     read_extended_metadata,
+    read_pyproject,
 )
 
 

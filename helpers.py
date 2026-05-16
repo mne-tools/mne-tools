@@ -6,9 +6,9 @@ import logging
 import os
 import subprocess
 
-from packaging.requirements import Requirement
-from tomlkit.toml_file import TOMLFile
+import tomllib
 import yaml
+from packaging.requirements import Requirement
 
 logger = logging.getLogger(__name__)
 
