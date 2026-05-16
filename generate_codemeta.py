@@ -24,12 +24,6 @@ def main():
         help="The directory of the project to get the codemeta information for.",
     )
     parser.add_argument(
-        "metadata_path",
-        type=str,
-        default=SUPPRESS,
-        help="The path to a yaml file containing extended package metadata.",
-    )
-    parser.add_argument(
         "release_version",
         type=str,
         default=SUPPRESS,
@@ -48,7 +42,6 @@ def main():
     args = parser.parse_args()
     # Required args
     project_root = args.project_root
-    metadata_path = args.metadata_path
     release_version = args.release_version
     # Optional args
     date_modified = args.date_modified
@@ -60,7 +53,9 @@ def main():
     with open(os.path.join(project_root, "pyproject.toml"), "r", encoding="utf-8") as f:
         pyproject = tomllib.loads(f.read())
     classifiers = pyproject["project"].get("classifiers", [])
-    extended_metadata = read_extended_metadata(metadata_path)
+    extended_metadata = read_extended_metadata(
+        os.path.join(project_root, ".extended_metadata.yaml")
+    )
 
     # Parse the git shortlog to get the list of authors
     names_emails = get_contributor_names_emails(
@@ -81,7 +76,7 @@ def main():
     authors = ",\n        ".join(authors)
 
     # Format keywords
-    keywords = [kw.strip() for kw in pyproject["project"]["keywords"].split(",")]
+    keywords = [kw.strip() for kw in pyproject["project"]["keywords"]]
     keywords = '",\n        "'.join(keywords)
 
     # Format programming languages
@@ -107,6 +102,7 @@ def main():
     repo_url = pyproject["project"]["urls"].get("Source Code")
     if repo_url is None:
         repo_url = pyproject["project"]["urls"]["Repository"]
+    repo_url = repo_url.rstrip("/")
 
     # Assemble the codemeta JSON
     codemeta = f"""{{
@@ -123,10 +119,10 @@ def main():
     "version": "{release_version}",
     "description": "{pyproject["project"]["description"]}",
     "applicationCategory": "{extended_metadata["application_category"]}",
-    "developmentStatus": "active",
-    """
-    if extended_metadata.get("publication_doi") is not None:
-        codemeta += f'"referencePublication": "{extended_metadata["publication_doi"]}"'
+    "developmentStatus": "active","""
+    if extended_metadata.get("preferred_citation") is not None:
+        codemeta += f'''
+    "referencePublication": "{extended_metadata["preferred_citation"]["doi"]}",'''
     codemeta += f"""
     "keywords": [
         "{keywords}"
@@ -143,8 +139,8 @@ def main():
     "author": [
         {authors}
     ]
-    }}
-    """
+}}
+"""
 
     # Write to file
     with open(

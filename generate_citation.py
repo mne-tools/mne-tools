@@ -26,12 +26,6 @@ def main():
         help="The directory of the project to get the citation information for.",
     )
     parser.add_argument(
-        "metadata_path",
-        type=str,
-        default=SUPPRESS,
-        help="The path to a yaml file containing extended package metadata.",
-    )
-    parser.add_argument(
         "release_version",
         type=str,
         default=SUPPRESS,
@@ -50,7 +44,6 @@ def main():
     args = parser.parse_args()
     # Required args
     project_root = args.project_root
-    metadata_path = args.metadata_path
     release_version = args.release_version
     # Optional args
     release_date = args.release_date
@@ -61,7 +54,9 @@ def main():
     # Read the package metadata
     with open(os.path.join(project_root, "pyproject.toml"), "r", encoding="utf-8") as f:
         pyproject = tomllib.loads(f.read())
-    extended_metadata = read_extended_metadata(metadata_path)
+    extended_metadata = read_extended_metadata(
+        os.path.join(project_root, ".extended_metadata.yaml")
+    )
 
     # Parse the git shortlog to get the list of authors
     names_emails = get_contributor_names_emails(
@@ -72,9 +67,9 @@ def main():
     # Format author list
     # TODO: someday would be nice to include ORCiD identifiers too
     authors = [
-        f"  - family-names: {last}\n    given-names: {first}"
+        f"- family-names: {last}\n  given-names: {first}"
         if first
-        else f"  - name: {last}"
+        else f"- name: {last}"
         for (first, last, _) in names_emails
     ]
     authors = "\n".join(authors)
@@ -99,13 +94,18 @@ def main():
         )
 
     # Wrap multi-word keywords in quotes and form a bulleted list
-    keywords = [kw.strip() for kw in pyproject["project"]["keywords"].split(",")]
+    keywords = [kw.strip() for kw in pyproject["project"]["keywords"]]
     keywords = (f'"{kw}"' if " " in kw else kw for kw in keywords)
-    keywords = "\n".join(f"  - {kw}" for kw in keywords)
+    keywords = "\n".join(f"- {kw}" for kw in keywords)
 
     # Get preferred citation
     if extended_metadata.get("preferred_citation") is not None:
-        preferred_citation = yaml.dump(extended_metadata["preferred_citation"])
+        preferred_citation = yaml.dump(
+            extended_metadata["preferred_citation"], sort_keys=False, allow_unicode=True
+        ).strip("\n")
+        preferred_citation = "\n".join(
+            f"  {line}" for line in preferred_citation.split("\n")
+        )
     else:
         preferred_citation = None
 

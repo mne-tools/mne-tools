@@ -55,7 +55,7 @@ def read_extended_metadata(metadata_path: str) -> dict:
 
 
 def get_contributor_names_emails(
-    repo_dir: str, compound_surnames: str | None
+    repo_dir: str, compound_surnames: list[str] | None
 ) -> list[tuple[str, str, str]]:
     """Extract names and emails for contributors to a git repository.
 
@@ -63,8 +63,8 @@ def get_contributor_names_emails(
     ----------
     repo_dir : str
         Directory of the repository to get information for.
-    compound_surnames : str | None
-        Comma-separated compound surnames to handle when parsing author names.
+    compound_surnames : list of str | None
+        List of compound surnames to handle when parsing author names.
 
     Returns
     -------
@@ -74,7 +74,7 @@ def get_contributor_names_emails(
     if compound_surnames is None:
         compound_surnames = []
     else:
-        compound_surnames = [s.strip() for s in compound_surnames.split(",")]
+        compound_surnames = [s.strip() for s in compound_surnames]
 
     git_shortlog = (
         subprocess.run(
