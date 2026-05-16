@@ -3,6 +3,7 @@
 # Copyright the MNE-Tools contributors.
 
 import importlib
+import logging
 import sys
 from argparse import SUPPRESS, ArgumentParser
 from importlib import metadata
@@ -10,12 +11,15 @@ from importlib import metadata
 from packaging.version import Version
 
 from helpers import (
-    MODULE_NAME_MAPPING,
+    MODULE_IMPORT_NAME_MAPPING,
     get_bad_deps_message,
     get_deps_to_check,
     get_min_pinned_ver,
     raise_bad_deps_messages,
 )
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Note: This script is meant to work with an 'old' environment, i.e., looks for versions
 # of installed modules to match the minimum versions in pyproject.toml
@@ -62,7 +66,7 @@ def main():
     bad_version = []
     for dep in check_deps:
         mod_name, pyproject_ver = get_min_pinned_ver(dep)
-        mod_import_name = MODULE_NAME_MAPPING.get(mod_name, mod_name)
+        mod_import_name = MODULE_IMPORT_NAME_MAPPING.get(mod_name, mod_name)
 
         # Need to handle logic for checking Python version vs. module versions
         # differently.

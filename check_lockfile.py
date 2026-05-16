@@ -4,18 +4,22 @@
 
 import os
 from argparse import SUPPRESS, ArgumentParser
+import logging
 
 from packaging.version import Version
 from packaging.specifiers import Specifier
 from tomlkit.toml_file import TOMLFile
 
 from helpers import (
-    MODULE_NAME_MAPPING,
     get_bad_deps_message,
     get_deps_to_check,
     get_min_pinned_ver,
     raise_bad_deps_messages,
+    IMPORT_MODULE_NAME_MAPPING,
 )
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Note: This script is meant to work with a uv lockfile and an 'old' environment, i.e.,
 # looks for module versions in the lockfile pinned to the minimum versions in
@@ -89,7 +93,7 @@ def main():
         mod_name, pyproject_ver = get_min_pinned_ver(dep)
         if pyproject_ver is None:
             continue  # no min version specified, so no check needed
-        name = MODULE_NAME_MAPPING.get(mod_name, mod_name)
+        name = IMPORT_MODULE_NAME_MAPPING.get(mod_name, mod_name)
 
         if name not in lockfile_modules.keys():
             bad_missing.append(name)

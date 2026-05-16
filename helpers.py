@@ -12,7 +12,10 @@ import yaml
 
 logger = logging.getLogger(__name__)
 
-MODULE_NAME_MAPPING = {"scikit-learn": "sklearn", "lazy-loader": "lazy_loader"}
+MODULE_IMPORT_NAME_MAPPING = {"scikit-learn": "sklearn", "lazy-loader": "lazy_loader"}
+IMPORT_MODULE_NAME_MAPPING = {
+    value: key for key, value in MODULE_IMPORT_NAME_MAPPING.items()
+}
 
 
 def check_release_version(version: str) -> None:
@@ -161,11 +164,10 @@ def get_deps_to_check(project_root: str, groups: list[str]) -> list[str]:
     """
     pyproject = TOMLFile(os.path.join(project_root, "pyproject.toml"))
     pyproject_data = pyproject.read()
-    check_deps = [
-        [f"python {pyproject_data['project']['requires-python']}"]
-        + pyproject_data["project"]["dependencies"]
-    ]
-    check_deps += [pyproject_data["dependency-groups"][group] for group in groups]
+    check_deps = [f"python {pyproject_data['project']['requires-python']}"]
+    check_deps.extend(pyproject_data["project"]["dependencies"])
+    for group in groups:
+        check_deps.extend(pyproject_data["dependency-groups"][group])
     logger.info(
         "Checking the versions in the environment for the following dependencies: %s",
         ", ".join(check_deps),
