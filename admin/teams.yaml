@@ -78,18 +78,18 @@
     - repo: mne-connectivity
       role: maintain
 
-- name: MNE-CPP Maintainers
+- name: MNE-CPP Admins
   description: ''
   members:
     - chdinh
     - LorenzE
   permissions:
     - repo: mne-cpp
-      role: maintain
+      role: admin
     - repo: mne-cpp-presentations
-      role: maintain
+      role: admin
     - repo: mne-cpp-test-data
-      role: maintain
+      role: admin
 
 - name: MNE-CPP Collaborators
   description: ''
