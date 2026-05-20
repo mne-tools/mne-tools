@@ -205,6 +205,14 @@
     - repo: mne-icalabel
       role: maintain
 
+- name: MNE-ICALabel Admins
+  description: ''
+  members:
+    - mscheltienne
+  permissions:
+    - repo: mne-icalabel
+      role: admin
+
 - name: MNE-Incubator Maintainers
   description: ''
   members:
