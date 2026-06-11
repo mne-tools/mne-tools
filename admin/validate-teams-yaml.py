@@ -20,6 +20,7 @@ rev_mapping = {v: k for k, v in mapping.items()}
 org_only_teams = {
     "Auxiliary",  # for e.g. billing purposes
     "MNE-Python Emeriti",
+    "Sprinters",  # for write access to org-level projects
 }
 
 # multi-repo teams:
