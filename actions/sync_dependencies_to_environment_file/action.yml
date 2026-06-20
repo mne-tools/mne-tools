@@ -47,11 +47,11 @@ runs:
         python-version: '3.14'
     - name: Install actions dependencies
       run: |
-        action_root="$(dirname $(dirname ${{ github.action_path }}))"
-        pip install ${action_root}
+        echo "ACTION_ROOT=$(dirname $(dirname ${{ github.action_path }}))" >> ${GITHUB_ENV}
+        pip install ${{ env.ACTION_ROOT }}
       shell: bash
     - name: Sync dependencies to environment file
-      working-directory: ${action_root}
+      working-directory: ${{ env.ACTION_ROOT }}
       run: |
         python sync_dependencies_to_environment_file.py \
           "${{ inputs.project-root }}" \
