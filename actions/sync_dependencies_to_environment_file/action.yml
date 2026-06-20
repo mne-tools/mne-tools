@@ -46,11 +46,13 @@ runs:
       with:
         python-version: '3.14'  
     - name: Install actions dependencies
-      run: pip install ${{ github.action_path }}
+      run: |
+        action_root="$(dirname $(dirname ${{ github.action_path }}))"
+        pip install ${action_root}
       shell: bash
     - name: Sync dependencies to environment file
       run: |
-        python ${{ github.action_path }}/sync_dependencies_to_environment_file.py \
+        python ${action_root}/sync_dependencies_to_environment_file.py \
           "${{ inputs.project-root }}" \
           --extras "${{ inputs.extras }}" \
           --additional_dependencies "${{ inputs.additional-dependencies }}" \
