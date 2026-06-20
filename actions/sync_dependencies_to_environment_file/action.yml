@@ -62,19 +62,15 @@ runs:
           --pip_dependencies "${{ inputs.pip-dependencies }}" \
           --requirements_overrides "${{ inputs.requirements-overrides }}"
       shell: bash
-    - name: Check if environment.yml has changed
-      id: check_changes
+    - name: Commit and push changes
+      shell: bash
       run: |
-        git diff --exit-code "${{ inputs.project-root }}/environment.yml"
-        if [[ $? -ne 0 ]]; then
-          echo "dirty=true" >> $GITHUB_OUTPUT
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add ${{ inputs.project-root }}/environment.yml
+        if ! git diff-index --quiet HEAD; then
+          git commit -m "Sync dependencies to environment.yml"
+          git push
+        else
+          echo "No changes detected. Skipping commit."
         fi
-      shell: bash
-    - name: Commit changes to environment.yml
-      run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git add "${{ inputs.project-root }}/environment.yml"
-        git commit -m "Sync dependencies to environment.yml" || echo "No changes to commit"
-      shell: bash
-      if: steps.check_changes.outputs.dirty == 'true'
