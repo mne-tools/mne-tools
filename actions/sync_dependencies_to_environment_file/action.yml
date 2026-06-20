@@ -63,14 +63,15 @@ runs:
           --requirements_overrides "${{ inputs.requirements-overrides }}"
       shell: bash
     - name: Commit and push changes
+
       shell: bash
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git add ${{ inputs.project-root }}/environment.yml
+        git add environment.yml
         if ! git diff-index --quiet HEAD; then
           git commit -m "Sync dependencies to environment.yml"
-          git push
+          git push origin HEAD:${{ github.head_ref }}
         else
           echo "No changes detected. Skipping commit."
         fi
