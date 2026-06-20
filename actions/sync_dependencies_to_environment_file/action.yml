@@ -50,7 +50,7 @@ runs:
       shell: bash
     - name: Sync dependencies to environment file
       run: |
-        python -m ../../sync_dependencies_to_environment_file.py \
+        python ../../sync_dependencies_to_environment_file.py \
           "${{ inputs.project-root }}" \
           --extras "${{ inputs.extras }}" \
           --additional_dependencies "${{ inputs.additional-dependencies }}" \
