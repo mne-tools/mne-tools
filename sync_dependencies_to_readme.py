@@ -10,7 +10,7 @@ from argparse import SUPPRESS, ArgumentParser
 import requests
 from packaging.requirements import Requirement
 
-from helpers import prettify_pins, read_pyproject
+from helpers import prettify_pins, read_pyproject, split_optional_args
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -43,11 +43,7 @@ def main():
     # Required args
     project_root = args.project_root
     # Optional args
-    ignore_upper_pins = args.ignore_upper_pins
-    if ignore_upper_pins is None:
-        ignore_upper_pins = []
-    else:
-        ignore_upper_pins = ignore_upper_pins.split(",")
+    ignore_upper_pins = split_optional_args(args.ignore_upper_pins)
 
     # Get the dependency info
     pyproject = read_pyproject(project_root=project_root)

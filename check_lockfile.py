@@ -16,6 +16,7 @@ from helpers import (
     get_deps_to_check,
     get_min_pinned_ver,
     raise_bad_deps_messages,
+    split_optional_args,
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -63,11 +64,7 @@ def main():
     project_root = args.project_root
     lockfile_path = args.lockfile_path
     # Optional args
-    groups = args.groups
-    if groups is None:
-        groups = []
-    else:
-        groups = groups.split(",")
+    groups = split_optional_args(args.groups)
 
     # Get dependencies to check from pyproject.toml
     check_deps = get_deps_to_check(project_root=project_root, groups=groups)

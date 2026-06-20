@@ -17,6 +17,8 @@ IMPORT_MODULE_NAME_MAPPING = {
     value: key for key, value in MODULE_IMPORT_NAME_MAPPING.items()
 }
 
+PIP_CONDA_MAPPING = {"neo": "python-neo"}
+
 
 def check_release_version(version: str) -> None:
     """Check the release version is in the expected 'X.Y.Z' format.
@@ -286,3 +288,23 @@ def prettify_pins(req: str | None) -> str:
         reqs = [p.replace(old, new) for p in reqs]
     reqs = reversed(reqs)
     return ",".join(reqs)
+
+
+def split_optional_args(arg: str | None, sep: str = ",") -> list[str]:
+    """Split a string of optional arguments into a list.
+
+    Parameters
+    ----------
+    arg : str | None
+        The string of optional arguments. If None, an empty list will be returned.
+    sep : str, optional (Default ",")
+        The separator to use for splitting the string.
+
+    Returns
+    -------
+    arg_list : list of str
+        The list of optional arguments.
+    """
+    if arg is None:
+        return []
+    return [a.strip() for a in arg.split(sep)]
