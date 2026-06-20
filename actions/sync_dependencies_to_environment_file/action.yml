@@ -62,16 +62,6 @@ runs:
           --pip_dependencies "${{ inputs.pip-dependencies }}" \
           --requirements_overrides "${{ inputs.requirements-overrides }}"
       shell: bash
-    - name: Commit and push changes
-      working-directory: ${{ inputs.project-root }}
+    - name: Show git diff
+      run: git diff
       shell: bash
-      run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git add environment.yml
-        if ! git diff-index --quiet HEAD; then
-          git commit -m "Sync dependencies to environment.yml"
-          git push
-        else
-          echo "No changes detected. Skipping commit."
-        fi
