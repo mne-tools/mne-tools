@@ -131,7 +131,7 @@ def get_contributor_names_emails(
     names_emails = [
         parse_name_email(name_blob=line, compound_surnames=compound_surnames)
         for line in git_shortlog
-        if "[bot]" not in line and line.strip() != ""
+        if "[bot]" not in line
     ]
 
     return names_emails
