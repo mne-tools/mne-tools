@@ -21,7 +21,7 @@ from helpers import (
 def main():
     parser = ArgumentParser(description="Generate `CITATION.cff`.")
     parser.add_argument(
-        "project_root",
+        "project-root",
         type=str,
         default=SUPPRESS,
         help="The directory of the project to get the citation information for.",
@@ -44,7 +44,7 @@ def main():
 
     args = parser.parse_args()
     # Required args
-    project_root = getattr(args, "project_root")
+    project_root = getattr(args, "project-root")
     release_version = getattr(args, "release-version")
     # Optional args
     release_date = args.release_date
@@ -73,12 +73,9 @@ def main():
     # Format author list
     # TODO: someday would be nice to include ORCiD identifiers too
     authors = [
-        f"- family-names: {last}\n  given-names: {first}"
-        if first
-        else f"- name: {last}"
+        {"family-names": last, "given-names": first} if first else {"name": last}
         for (first, last, _) in names_emails
     ]
-    authors = "\n".join(authors)
 
     # Get the commit info
     commit = subprocess.run(
@@ -99,38 +96,26 @@ def main():
             "paper listed in the preferred-citation field."
         )
 
-    # Wrap multi-word keywords in quotes and form a bulleted list
+    # Strip the keywords
     keywords = [kw.strip() for kw in pyproject["project"]["keywords"]]
-    keywords = (f'"{kw}"' if " " in kw else kw for kw in keywords)
-    keywords = "\n".join(f"- {kw}" for kw in keywords)
-
-    # Get preferred citation
-    if extended_metadata.get("preferred_citation") is not None:
-        preferred_citation = yaml.dump(
-            extended_metadata["preferred_citation"], sort_keys=False, allow_unicode=True
-        ).strip("\n")
-        preferred_citation = "\n".join(
-            f"  {line}" for line in preferred_citation.split("\n")
-        )
-    else:
-        preferred_citation = None
 
     # Assemble the CFF string
-    citation_cff = f"""\
-cff-version: 1.2.0
-title: "{extended_metadata["package_name"]}"
-message: "{message}"
-version: {release_version}
-date-released: "{release_date}"
-commit: {commit}
-doi: {extended_metadata["code_doi"]}
-keywords:
-{keywords}
-authors:
-{authors}
-"""
-    if preferred_citation is not None:
-        citation_cff += f"preferred-citation:\n{preferred_citation}\n"
+    cff_contents = {
+        "cff-version": "1.2.0",
+        "title": extended_metadata["package_name"],
+        "message": message,
+        "version": release_version,
+        "date-released": release_date,
+        "commit": commit,
+        "doi": extended_metadata["code_doi"],
+        "keywords": keywords,
+        "authors": authors,
+    }
+    if extended_metadata.get("preferred_citation") is not None:
+        cff_contents["preferred-citation"] = extended_metadata["preferred_citation"]
+    citation_cff = yaml.dump(
+        cff_contents, sort_keys=False, allow_unicode=True, width=float("inf")
+    )
 
     # Write to file
     with open(
