@@ -14,7 +14,8 @@ test = [
 dependencies = [
   "packaging",
   "pyyaml",
-  "requests"
+  "requests",
+  "tomlkit"
 ]
 description = "Shared tooling for the MNE-Tools org."
 name = "mne-tools"
