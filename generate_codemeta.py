@@ -127,6 +127,7 @@ def main():
     codemeta_contents["softwareRequirements"] = dependencies
     codemeta_contents["author"] = authors
     codemeta = json.dumps(codemeta_contents, indent=4)
+    codemeta += "\n"
 
     # Write to file
     with open(
