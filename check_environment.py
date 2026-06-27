@@ -51,7 +51,7 @@ def main():
 
     args = parser.parse_args()
     # Required args
-    project_root = args.project_root
+    project_root = getattr(args, "project-root")
     # Optional args
     groups = split_optional_args(args.groups)
 

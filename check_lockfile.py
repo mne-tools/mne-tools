@@ -61,8 +61,8 @@ def main():
 
     args = parser.parse_args()
     # Required args
-    project_root = args.project_root
-    lockfile_path = args.lockfile_path
+    project_root = getattr(args, "project-root")
+    lockfile_path = getattr(args, "lockfile-path")
     # Optional args
     groups = split_optional_args(args.groups)
 

@@ -40,8 +40,8 @@ def main():
 
     args = parser.parse_args()
     # Required args
-    project_root = args.project_root
-    release_version = args.release_version
+    project_root = getattr(args, "project-root")
+    release_version = getattr(args, "release-version")
     # Optional args
     date_modified = args.date_modified
 

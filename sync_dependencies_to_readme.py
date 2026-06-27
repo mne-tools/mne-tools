@@ -24,7 +24,7 @@ def main():
         description="Sync dependency information from `pyproject.toml` to `README.rst`."
     )
     parser.add_argument(
-        "project_root",
+        "project-root",
         type=str,
         default=SUPPRESS,
         help="The directory of the project to sync the dependency information for.",
@@ -41,7 +41,7 @@ def main():
 
     args = parser.parse_args()
     # Required args
-    project_root = args.project_root
+    project_root = getattr(args, "project-root")
     # Optional args
     ignore_upper_pins = split_optional_args(args.ignore_upper_pins)
 
