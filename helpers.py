@@ -5,6 +5,7 @@
 import logging
 import os
 import subprocess
+from datetime import date
 
 import tomllib
 import yaml
@@ -38,6 +39,30 @@ def check_release_version(version: str) -> None:
         raise ValueError(bad_version_msg) from error
     if len(split_version) != 3:
         raise ValueError(bad_version_msg)
+
+
+def check_sanitize_date_format(date_str: str) -> str:
+    """Check the date string is in the expected ISO 8601 format, and return as the date.
+
+    Parameters
+    ----------
+    date_str : str
+        The date string to check.
+
+    Returns
+    -------
+    date_str : str
+        The date string in 'YYYY-MM-DD' format.
+    """
+    try:
+        date_obj = date.fromisoformat(date_str)
+    except ValueError as error:
+        raise ValueError(
+            f"Invalid date format for `date-modified`: {date_str}. "
+            "Please use ISO 8601 format (i.e., YYYY-MM-DD)."
+        ) from error
+
+    return date_obj.strftime("%Y-%m-%d")
 
 
 def read_pyproject(project_root: str) -> dict:

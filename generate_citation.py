@@ -11,6 +11,7 @@ import yaml
 
 from helpers import (
     check_release_version,
+    check_sanitize_date_format,
     get_contributor_names_emails,
     read_extended_metadata,
     read_pyproject,
@@ -26,18 +27,18 @@ def main():
         help="The directory of the project to get the citation information for.",
     )
     parser.add_argument(
-        "release_version",
+        "release-version",
         type=str,
         default=SUPPRESS,
         help="The major.minor.micro release version.",
     )
     parser.add_argument(
-        "--release_date",
+        "--release-date",
         type=str,
         default=str(date.today()),
         help=(
-            "The release date in format 'YYYY-MM-DD'. If not specified, the current "
-            "date will be used."
+            "The release date of the current version in ISO 8601 format. If not "
+            "specified, the current date will be used."
         ),
     )
 
@@ -50,6 +51,9 @@ def main():
 
     # Check the release version format
     check_release_version(release_version)
+
+    # Check the release date format
+    release_date = check_sanitize_date_format(release_date)
 
     # Read the package metadata
     pyproject = read_pyproject(project_root=project_root)

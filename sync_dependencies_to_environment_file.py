@@ -20,7 +20,7 @@ def main():
         )
     )
     parser.add_argument(
-        "project_root",
+        "project-root",
         type=str,
         default=SUPPRESS,
         help="The directory of the project to sync the dependency information for.",
@@ -36,7 +36,7 @@ def main():
         ),
     )
     parser.add_argument(
-        "--additional_dependencies",
+        "--additional-dependencies",
         type=str,
         default=None,
         help=(
@@ -51,7 +51,7 @@ def main():
         help="Comma-separated names of channels to include in `environment.yml`.",
     )
     parser.add_argument(
-        "--pip_dependencies",
+        "--pip-dependencies",
         type=str,
         default=None,
         help=(
@@ -62,7 +62,7 @@ def main():
         ),
     )
     parser.add_argument(
-        "--requirements_overrides",
+        "--requirements-overrides",
         type=str,
         default=None,
         help=(
@@ -79,6 +79,8 @@ def main():
     extras = split_optional_args(args.extras)
     additional_dependencies = split_optional_args(args.additional_dependencies)
     channels = split_optional_args(args.channels)
+    if len(channels) == 0:
+        raise ValueError("At least one channel must be specified in `channels`.")
     pip_dependencies = split_optional_args(args.pip_dependencies)
     requirements_overrides = split_optional_args(args.requirements_overrides)
     requirements_overrides = [Requirement(req) for req in requirements_overrides]

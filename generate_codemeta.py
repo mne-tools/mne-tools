@@ -8,6 +8,7 @@ from datetime import date
 
 from helpers import (
     check_release_version,
+    check_sanitize_date_format,
     get_contributor_names_emails,
     read_extended_metadata,
     read_pyproject,
@@ -17,23 +18,23 @@ from helpers import (
 def main():
     parser = ArgumentParser(description="Generate `codemeta.json`.")
     parser.add_argument(
-        "project_root",
+        "project-root",
         type=str,
         default=SUPPRESS,
         help="The directory of the project to get the codemeta information for.",
     )
     parser.add_argument(
-        "release_version",
+        "release-version",
         type=str,
         default=SUPPRESS,
         help="The major.minor.micro release version.",
     )
     parser.add_argument(
-        "--date_modified",
+        "--date-modified",
         type=str,
         default=str(date.today()),
         help=(
-            "The release date of the current version in format 'YYYY-MM-DD'. If not "
+            "The release date of the current version in ISO 8601 format. If not "
             "specified, the current date will be used."
         ),
     )
@@ -47,6 +48,9 @@ def main():
 
     # Check the release version format
     check_release_version(release_version)
+
+    # Check the date modified format
+    date_modified = check_sanitize_date_format(date_modified)
 
     # Read the package metadata
     pyproject = read_pyproject(project_root=project_root)

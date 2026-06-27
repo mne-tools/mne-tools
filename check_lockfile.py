@@ -35,13 +35,13 @@ def main():
         )
     )
     parser.add_argument(
-        "project_root",
+        "project-root",
         type=str,
         default=SUPPRESS,
         help="The directory of the project to check the lockfile of.",
     )
     parser.add_argument(
-        "lockfile_path",
+        "lockfile-path",
         type=str,
         default=SUPPRESS,
         help=(

@@ -1,0 +1,37 @@
+name: 'MNE-Tools: Generate project citation'
+description: 'Generate project citation.'
+author: 'MNE-Tools'
+inputs:
+  project-root:
+    required: false
+    default: ${{ github.workspace }}
+  release-version:
+    required: true
+  release-date:
+    required: false
+    default: ${{ github.event.head_commit.timestamp }}
+  # For descriptions of the inputs, see `generate_citation.py`
+runs:
+  using: composite
+  steps:
+    - name: Install Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.14'
+    - name: Get root directory of the action
+      run: echo "ACTION_ROOT=$(dirname $(dirname ${{ github.action_path }}))" >> ${GITHUB_ENV}
+      shell: bash
+    - name: Install actions dependencies
+      run: pip install ${{ env.ACTION_ROOT }}
+      shell: bash
+    - name: Generate citation
+      working-directory: ${{ env.ACTION_ROOT }}
+      run: |
+        python generate_citation.py \
+          "${{ inputs.project-root }}" \
+          "${{ inputs.release-version }}" \
+          --release-date "${{ inputs.release-date }}"
+      shell: bash
+    - name: Show git diff
+      run: git diff
+      shell: bash

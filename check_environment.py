@@ -34,7 +34,7 @@ def main():
         )
     )
     parser.add_argument(
-        "project_root",
+        "project-root",
         type=str,
         default=SUPPRESS,
         help="The directory of the project to check the environment of.",

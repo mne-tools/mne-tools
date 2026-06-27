@@ -30,7 +30,7 @@ def main():
         help="The directory of the project to sync the dependency information for.",
     )
     parser.add_argument(
-        "--ignore_upper_pins",
+        "--ignore-upper-pins",
         type=str,
         default=None,
         help=(
