@@ -128,6 +128,8 @@ def get_contributor_names_emails(
         .split("\n")
     )
 
+    print(f"shortlog: {git_shortlog}")
+
     names_emails = [
         parse_name_email(name_blob=line, compound_surnames=compound_surnames)
         for line in git_shortlog
