@@ -154,7 +154,11 @@ def parse_name_email(
     name_email : tuple of (str, str, str)
         A tuple of (first name, last name, email).
     """
-    _, name_and_email = name_blob.strip().split("\t")  # remove commit count
+    out = name_blob.strip().split("\t")  # remove commit count
+    if len(out) != 2:
+        print(f"name blob: {name_blob}")
+        assert False
+    name_and_email = out[1]
 
     name, email = name_and_email.split(" <")
     email = email.strip(">")
