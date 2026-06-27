@@ -2,6 +2,7 @@
 # License: BSD-3-Clause
 # Copyright the MNE-Tools contributors.
 
+import json
 import os
 from argparse import SUPPRESS, ArgumentParser
 from datetime import date
@@ -70,38 +71,28 @@ def main():
 
     # Format author list
     authors = [
-        f"""{{
-           "@type":"Person",
-           "email":"{email}",
-           "givenName":"{first}",
-           "familyName": "{last}"
-        }}"""
+        {"@type": "Person", "email": email, "givenName": first, "familyName": last}
         for (first, last, email) in names_emails
     ]
-    authors = ",\n        ".join(authors)
 
     # Format keywords
     keywords = [kw.strip() for kw in pyproject["project"]["keywords"]]
-    keywords = '",\n        "'.join(keywords)
 
     # Format programming languages
     programming_languages = [
         lang for lang in classifiers if lang.startswith("Programming Language")
     ]
-    programming_languages = {
-        lang.split("::")[1].strip() for lang in programming_languages
-    }
-    programming_languages = '",\n        "'.join(programming_languages)
+    programming_languages = list(
+        {lang.split("::")[1].strip() for lang in programming_languages}
+    )
 
     # Format operating systems
     operating_systems = [os for os in classifiers if os.startswith("Operating System")]
     operating_systems = {os.split("::")[-1].strip() for os in operating_systems}
-    operating_systems = '",\n        "'.join(operating_systems)
 
     # Get dependencies and format
     dependencies = [f"python {pyproject['project']['requires-python']}"]
     dependencies.extend(pyproject["project"]["dependencies"])
-    dependencies = '",\n        "'.join(dependencies)
 
     # Get repo url
     repo_url = pyproject["project"]["urls"].get("Source Code")
@@ -110,42 +101,32 @@ def main():
     repo_url = repo_url.rstrip("/")
 
     # Assemble the codemeta JSON
-    codemeta = f"""{{
-    "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
-    "@type": "SoftwareSourceCode",
-    "license": "https://spdx.org/licenses/{pyproject["project"]["license"]}",
-    "codeRepository": "git+{repo_url}.git",
-    "dateCreated": "{extended_metadata["date_created"]}",
-    "datePublished": "{extended_metadata["date_published"]}",
-    "dateModified": "{date_modified}",
-    "downloadUrl": "{repo_url}/archive/v{release_version}.zip",
-    "issueTracker": "{repo_url}/issues",
-    "name": "{extended_metadata["package_name"]}",
-    "version": "{release_version}",
-    "description": "{pyproject["project"]["description"]}",
-    "applicationCategory": "{extended_metadata["application_category"]}",
-    "developmentStatus": "active","""
+    codemeta_contents = {
+        "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+        "@type": "SoftwareSourceCode",
+        "license": f"https://spdx.org/licenses/{pyproject['project']['license']}",
+        "codeRepository": f"git+{repo_url}.git",
+        "dateCreated": extended_metadata["date_created"],
+        "datePublished": extended_metadata["date_published"],
+        "dateModified": date_modified,
+        "downloadUrl": f"{repo_url}/archive/v{release_version}.zip",
+        "issueTracker": f"{repo_url}/issues",
+        "name": extended_metadata["package_name"],
+        "version": release_version,
+        "description": pyproject["project"]["description"],
+        "applicationCategory": extended_metadata["application_category"],
+        "developmentStatus": "active",
+    }
     if extended_metadata.get("preferred_citation") is not None:
-        codemeta += f'''
-    "referencePublication": "{extended_metadata["preferred_citation"]["doi"]}",'''
-    codemeta += f"""
-    "keywords": [
-        "{keywords}"
-    ],
-    "programmingLanguage": [
-        "{programming_languages}"
-    ],
-    "operatingSystem": [
-        "{operating_systems}"
-    ],
-    "softwareRequirements": [
-        "{dependencies}"
-    ],
-    "author": [
-        {authors}
-    ]
-}}
-"""
+        codemeta_contents["referencePublication"] = extended_metadata[
+            "preferred_citation"
+        ]["doi"]
+    codemeta_contents["keywords"] = keywords
+    codemeta_contents["programmingLanguage"] = programming_languages
+    codemeta_contents["operatingSystem"] = list(operating_systems)
+    codemeta_contents["softwareRequirements"] = dependencies
+    codemeta_contents["author"] = authors
+    codemeta = json.dumps(codemeta_contents, indent=4)
 
     # Write to file
     with open(
