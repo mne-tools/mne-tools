@@ -41,28 +41,20 @@ def check_release_version(version: str) -> None:
         raise ValueError(bad_version_msg)
 
 
-def check_sanitize_date_format(date_str: str) -> str:
-    """Check the date string is in the expected ISO 8601 format, and return as the date.
+def check_date_format(date_str: str) -> None:
+    """Check the date string is in the 'YYYY-MM-DD' format.
 
     Parameters
     ----------
     date_str : str
         The date string to check.
-
-    Returns
-    -------
-    date_str : str
-        The date string in 'YYYY-MM-DD' format.
     """
     try:
-        date_obj = date.fromisoformat(date_str)
+        date.fromisoformat(date_str)
     except ValueError as error:
         raise ValueError(
-            f"Invalid date format for `date-modified`: {date_str}. "
-            "Please use ISO 8601 format (i.e., YYYY-MM-DD)."
+            f"`date_modified` expects the format 'YYYY-MM-DD'. Got {date_str}"
         ) from error
-
-    return date_obj.strftime("%Y-%m-%d")
 
 
 def read_pyproject(project_root: str) -> dict:

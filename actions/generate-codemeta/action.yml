@@ -9,7 +9,7 @@ inputs:
     required: true
   data-modified:
     required: false
-    default: ${{ github.event.head_commit.timestamp }}
+    default: null
   # For descriptions of the inputs, see `generate_codemeta.py`
 runs:
   using: composite

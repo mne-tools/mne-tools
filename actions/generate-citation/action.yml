@@ -9,7 +9,7 @@ inputs:
     required: true
   release-date:
     required: false
-    default: ${{ github.event.head_commit.timestamp }}
+    default: null
   # For descriptions of the inputs, see `generate_citation.py`
 runs:
   using: composite
