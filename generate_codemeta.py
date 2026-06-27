@@ -87,8 +87,10 @@ def main():
     )
 
     # Format operating systems
-    operating_systems = [os for os in classifiers if os.startswith("Operating System")]
-    operating_systems = {os.split("::")[-1].strip() for os in operating_systems}
+    operating_systems = [
+        opsys for opsys in classifiers if opsys.startswith("Operating System")
+    ]
+    operating_systems = {opsys.split("::")[-1].strip() for opsys in operating_systems}
 
     # Get dependencies and format
     dependencies = [f"python {pyproject['project']['requires-python']}"]
