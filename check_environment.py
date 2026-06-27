@@ -42,7 +42,7 @@ def main():
     parser.add_argument(
         "--groups",
         type=str,
-        default=None,
+        default="",
         help=(
             "Comma-separated names of additional groups in `pyproject.toml`'s "
             "`[dependency-groups]` whose versions should be checked."

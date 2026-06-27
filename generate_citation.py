@@ -5,6 +5,7 @@
 import os
 import subprocess
 from argparse import SUPPRESS, ArgumentParser
+from datetime import date
 
 import yaml
 
@@ -34,7 +35,7 @@ def main():
     parser.add_argument(
         "--release-date",
         type=str,
-        default=None,
+        default="",
         help=(
             "The release date of the current version in format 'YYYY-MM-DD'. If not "
             "specified, the current date will be used."
@@ -52,7 +53,10 @@ def main():
     check_release_version(release_version)
 
     # Check the release date format
-    check_date_format(release_date)
+    if release_date == "":
+        release_date = str(date.today())
+    else:
+        check_date_format(release_date)
 
     # Read the package metadata
     pyproject = read_pyproject(project_root=project_root)

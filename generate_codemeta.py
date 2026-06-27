@@ -4,6 +4,7 @@
 
 import os
 from argparse import SUPPRESS, ArgumentParser
+from datetime import date
 
 from helpers import (
     check_date_format,
@@ -31,7 +32,7 @@ def main():
     parser.add_argument(
         "--date-modified",
         type=str,
-        default=None,
+        default="",
         help=(
             "The release date of the current version in format 'YYYY-MM-DD'. If not "
             "specified, the current date will be used."
@@ -49,7 +50,10 @@ def main():
     check_release_version(release_version)
 
     # Check the date modified format
-    check_date_format(date_modified)
+    if date_modified == "":
+        date_modified = str(date.today())
+    else:
+        check_date_format(date_modified)
 
     # Read the package metadata
     pyproject = read_pyproject(project_root=project_root)

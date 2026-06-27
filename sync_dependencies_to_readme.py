@@ -32,7 +32,7 @@ def main():
     parser.add_argument(
         "--ignore-upper-pins",
         type=str,
-        default=None,
+        default="",
         help=(
             "A comma-separated list of packages for which to ignore upper pin "
             "constraints when listing dependencies.",

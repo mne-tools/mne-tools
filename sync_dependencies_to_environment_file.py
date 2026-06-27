@@ -28,7 +28,7 @@ def main():
     parser.add_argument(
         "--extras",
         type=str,
-        default=None,
+        default="",
         help=(
             "Comma-separated names of extra dependencies in `pyproject.toml`'s "
             "`[project.optional-dependencies]` that should be included in "
@@ -38,7 +38,7 @@ def main():
     parser.add_argument(
         "--additional-dependencies",
         type=str,
-        default=None,
+        default="",
         help=(
             "Comma-separated names of additional dependencies that are not included in "
             "`pyproject.toml`, but which should be included in `environment.yml`."
@@ -53,7 +53,7 @@ def main():
     parser.add_argument(
         "--pip-dependencies",
         type=str,
-        default=None,
+        default="",
         help=(
             "Comma-separated names of dependencies which should be installed via pip. "
             "The should be dependencies already included as core dependencies, in "
@@ -64,7 +64,7 @@ def main():
     parser.add_argument(
         "--requirements-overrides",
         type=str,
-        default=None,
+        default="",
         help=(
             "Comma-separated dependencies parseable by "
             "`packaging.requirements.Requirement`, which will override the information "
