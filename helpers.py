@@ -119,7 +119,7 @@ def get_contributor_names_emails(
 
     git_shortlog = (
         subprocess.run(
-            ["git", "-C", repo_dir, "shortlog", "-nse"],
+            ["git", "-C", repo_dir, "shortlog", "-nse", "HEAD"],
             capture_output=True,
             text=True,
             check=True,
