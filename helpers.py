@@ -128,8 +128,6 @@ def get_contributor_names_emails(
         .split("\n")
     )
 
-    print(f"shortlog: {git_shortlog}")
-
     names_emails = [
         parse_name_email(name_blob=line, compound_surnames=compound_surnames)
         for line in git_shortlog
@@ -156,11 +154,7 @@ def parse_name_email(
     name_email : tuple of (str, str, str)
         A tuple of (first name, last name, email).
     """
-    out = name_blob.strip().split("\t")  # remove commit count
-    if len(out) != 2:
-        print(f"name blob: {name_blob}")
-        assert False
-    name_and_email = out[1]
+    _, name_and_email = name_blob.strip().split("\t")  # remove commit count
 
     name, email = name_and_email.split(" <")
     email = email.strip(">")
