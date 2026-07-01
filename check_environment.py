@@ -49,8 +49,6 @@ def main():
         ),
     )
 
-    assert False, "test fail is caught"
-
     args = parser.parse_args()
     # Required args
     project_root = getattr(args, "project-root")
