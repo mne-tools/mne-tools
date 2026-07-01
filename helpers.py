@@ -7,7 +7,7 @@ import os
 import subprocess
 from datetime import date
 
-import tomllib
+import tomlkit
 import yaml
 from packaging.requirements import Requirement
 
@@ -71,9 +71,9 @@ def read_pyproject(project_root: str) -> dict:
         The `pyproject.toml` contents.
     """
     with open(os.path.join(project_root, "pyproject.toml"), "r", encoding="utf-8") as f:
-        pyproject = tomllib.loads(f.read())
+        pyproject = tomlkit.parse(f.read())
 
-    return pyproject
+    return pyproject.unwrap()  # convert to dict from tomlkit container
 
 
 def read_extended_metadata(metadata_path: str) -> dict:
