@@ -82,15 +82,17 @@ def main():
     programming_languages = [
         lang for lang in classifiers if lang.startswith("Programming Language")
     ]
-    programming_languages = list(
-        {lang.split("::")[1].strip() for lang in programming_languages}
+    programming_languages = sorted(
+        list({lang.split("::")[1].strip() for lang in programming_languages})
     )
 
     # Format operating systems
     operating_systems = [
         opsys for opsys in classifiers if opsys.startswith("Operating System")
     ]
-    operating_systems = {opsys.split("::")[-1].strip() for opsys in operating_systems}
+    operating_systems = sorted(
+        list({opsys.split("::")[-1].strip() for opsys in operating_systems})
+    )
 
     # Get dependencies and format
     dependencies = [f"python {pyproject['project']['requires-python']}"]
@@ -125,7 +127,7 @@ def main():
         ]["doi"]
     codemeta_contents["keywords"] = keywords
     codemeta_contents["programmingLanguage"] = programming_languages
-    codemeta_contents["operatingSystem"] = list(operating_systems)
+    codemeta_contents["operatingSystem"] = operating_systems
     codemeta_contents["softwareRequirements"] = dependencies
     codemeta_contents["author"] = authors
     codemeta = json.dumps(codemeta_contents, indent=4)
