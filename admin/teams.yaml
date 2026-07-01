@@ -367,6 +367,8 @@
       role: maintain
     - repo: mne-installers
       role: maintain
+    - repo: mne-kit-gui
+      role: maintain
     - repo: mne-nirs
       role: maintain
     - repo: mne-python
