@@ -379,6 +379,8 @@
       role: maintain
     - repo: mne-tools
       role: maintain
+    - repo: mne-tools.github.io
+      role: maintain
 
 - name: Sprinters
   description: For attendees at MNE sprints; necessary for write access to org-level project boards
