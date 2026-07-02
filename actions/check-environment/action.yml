@@ -1,0 +1,39 @@
+name: 'MNE-Tools: Check old environment of project'
+description: 'Check the old environment of the project.'
+author: 'MNE-Tools'
+inputs:
+  project-root:
+    required: false
+    default: ${{ github.workspace }}
+  groups:
+    required: false
+    default: null
+  # For descriptions of the inputs, see `src/mne_tools/check_environment.py`
+runs:
+  using: composite
+  steps:
+    - name: Activate project environment
+      run : echo PATH=${{ inputs.project-root }}/.venv/bin:$PATH >> $GITHUB_ENV
+      shell: bash
+    - name: Get root directory of the action
+      run: echo "ACTION_ROOT=$(dirname $(dirname ${{ github.action_path }}))" >> ${GITHUB_ENV}
+      shell: bash
+    - name: Install actions dependencies
+      run: pip install -e ${{ env.ACTION_ROOT }}
+      shell: bash
+    - name: Check environment
+      run: |
+        python -m mne_tools.check_environment \
+          "${{ inputs.project-root }}" \
+          --groups "${{ inputs.groups }}"
+      shell: bash
+    - name: Report failure
+      if: failure()
+      run: |
+        echo "Environment check failed. Please see the logs above for details."
+      shell: bash
+    - name: Report success
+      if: success()
+      run: |
+        echo "Environment check passed."
+      shell: bash

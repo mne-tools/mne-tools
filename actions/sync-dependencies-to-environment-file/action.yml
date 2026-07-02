@@ -1,0 +1,46 @@
+name: 'MNE-Tools: Sync Dependencies to Environment File'
+description: 'Sync dependency information from `pyproject.toml` to `environment.yml`.'
+author: 'MNE-Tools'
+inputs:
+  project-root:
+    required: false
+    default: ${{ github.workspace }}
+  extras:
+    required: false
+    default: null
+  additional-dependencies:
+    required: false
+    default: null
+  channels:
+    required: false
+    default: "conda-forge"
+  pip-dependencies:
+    required: false
+    default: null
+  requirements-overrides:
+    required: false
+    default: null
+  # For descriptions of the inputs, see `src/mne_tools/sync_dependencies_to_environment_file.py`
+runs:
+  using: composite
+  steps:
+    - name: Install Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.14'
+    - name: Get root directory of the action
+      run: echo "ACTION_ROOT=$(dirname $(dirname ${{ github.action_path }}))" >> ${GITHUB_ENV}
+      shell: bash
+    - name: Install actions dependencies
+      run: pip install -e ${{ env.ACTION_ROOT }}
+      shell: bash
+    - name: Sync dependencies to environment file
+      run: |
+        python -m mne_tools.sync_dependencies_to_environment_file \
+          "${{ inputs.project-root }}" \
+          --extras "${{ inputs.extras }}" \
+          --additional-dependencies "${{ inputs.additional-dependencies }}" \
+          --channels "${{ inputs.channels }}" \
+          --pip-dependencies "${{ inputs.pip-dependencies }}" \
+          --requirements-overrides "${{ inputs.requirements-overrides }}"
+      shell: bash
