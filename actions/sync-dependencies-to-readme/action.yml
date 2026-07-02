@@ -8,7 +8,7 @@ inputs:
   ignore-upper-pins:
     required: false
     default: null
-  # For descriptions of the inputs, see `sync_dependencies_to_readme.py`
+  # For descriptions of the inputs, see `src/mne_tools/sync_dependencies_to_readme.py`
 runs:
   using: composite
   steps:
@@ -20,7 +20,7 @@ runs:
       run: echo "ACTION_ROOT=$(dirname $(dirname ${{ github.action_path }}))" >> ${GITHUB_ENV}
       shell: bash
     - name: Install actions dependencies
-      run: pip install ${{ env.ACTION_ROOT }}
+      run: pip install -e ${{ env.ACTION_ROOT }}
       shell: bash
     - name: Sync dependencies to README
       run: |
