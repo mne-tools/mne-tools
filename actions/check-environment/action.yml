@@ -22,9 +22,8 @@ runs:
       run: pip install ${{ env.ACTION_ROOT }}
       shell: bash
     - name: Check environment
-      working-directory: ${{ env.ACTION_ROOT }}
       run: |
-        python check_environment.py \
+        python -m mne_tools.check_environment \
           "${{ inputs.project-root }}" \
           --groups "${{ inputs.groups }}"
       shell: bash

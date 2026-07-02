@@ -23,12 +23,8 @@ runs:
       run: pip install ${{ env.ACTION_ROOT }}
       shell: bash
     - name: Sync dependencies to README
-      working-directory: ${{ env.ACTION_ROOT }}
       run: |
-        python sync_dependencies_to_readme.py \
+        python -m mne_tools.sync_dependencies_to_readme \
           "${{ inputs.project-root }}" \
           --ignore-upper-pins "${{ inputs.ignore-upper-pins }}"
-      shell: bash
-    - name: Show git diff
-      run: git diff
       shell: bash

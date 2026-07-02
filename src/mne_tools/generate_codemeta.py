@@ -7,7 +7,7 @@ import os
 from argparse import SUPPRESS, ArgumentParser
 from datetime import date
 
-from helpers import (
+from .helpers import (
     check_date_format,
     check_release_version,
     get_contributor_names_emails,

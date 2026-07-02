@@ -32,13 +32,9 @@ runs:
         fi
       shell: bash
     - name: Generate citation
-      working-directory: ${{ env.ACTION_ROOT }}
       run: |
-        python generate_citation.py \
+        python -m mne_tools.generate_citation \
           "${{ inputs.project-root }}" \
           "${{ inputs.release-version }}" \
           --release-date "${{ inputs.release-date }}"
-      shell: bash
-    - name: Show git diff
-      run: git diff
       shell: bash

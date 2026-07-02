@@ -35,16 +35,12 @@ runs:
       run: pip install ${{ env.ACTION_ROOT }}
       shell: bash
     - name: Sync dependencies to environment file
-      working-directory: ${{ env.ACTION_ROOT }}
       run: |
-        python sync_dependencies_to_environment_file.py \
+        python -m mne_tools.sync_dependencies_to_environment_file \
           "${{ inputs.project-root }}" \
           --extras "${{ inputs.extras }}" \
           --additional-dependencies "${{ inputs.additional-dependencies }}" \
           --channels "${{ inputs.channels }}" \
           --pip-dependencies "${{ inputs.pip-dependencies }}" \
           --requirements-overrides "${{ inputs.requirements-overrides }}"
-      shell: bash
-    - name: Show git diff
-      run: git diff
       shell: bash

@@ -10,7 +10,7 @@ from argparse import SUPPRESS, ArgumentParser
 import requests
 from packaging.requirements import Requirement
 
-from helpers import prettify_pins, read_pyproject, split_optional_args
+from .helpers import prettify_pins, read_pyproject, split_optional_args
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

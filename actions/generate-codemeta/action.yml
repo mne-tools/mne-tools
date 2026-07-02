@@ -32,13 +32,9 @@ runs:
         fi
       shell: bash
     - name: Generate codemeta
-      working-directory: ${{ env.ACTION_ROOT }}
       run: |
-        python generate_codemeta.py \
+        python -m mne_tools.generate_codemeta \
           "${{ inputs.project-root }}" \
           "${{ inputs.release-version }}" \
           --date-modified "${{ inputs.date-modified }}"
-      shell: bash
-    - name: Show git diff
-      run: git diff
       shell: bash

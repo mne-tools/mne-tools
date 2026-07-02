@@ -25,9 +25,8 @@ runs:
       run: pip install ${{ env.ACTION_ROOT }}
       shell: bash
     - name: Check lockfile
-      working-directory: ${{ env.ACTION_ROOT }}
       run: |
-        python check_lockfile.py \
+        python -m mne_tools.check_lockfile \
           "${{ inputs.project-root }}" \
           "${{ inputs.lockfile-path }}" \
           --groups "${{ inputs.groups }}"

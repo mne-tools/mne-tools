@@ -10,7 +10,7 @@ from importlib import metadata
 
 from packaging.version import Version
 
-from helpers import (
+from .helpers import (
     MODULE_IMPORT_NAME_MAPPING,
     get_bad_deps_message,
     get_deps_to_check,
