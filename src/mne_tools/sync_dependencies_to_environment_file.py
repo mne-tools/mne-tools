@@ -7,7 +7,7 @@ from pathlib import Path
 from packaging.requirements import Requirement
 import logging
 
-from .helpers import split_optional_args, read_pyproject, PIP_CONDA_MAPPING
+from mne_tools.helpers import split_optional_args, read_pyproject, PIP_CONDA_MAPPING
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

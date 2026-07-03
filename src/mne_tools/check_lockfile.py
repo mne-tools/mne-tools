@@ -10,7 +10,7 @@ from packaging.specifiers import Specifier
 from packaging.version import Version
 from tomlkit.toml_file import TOMLFile
 
-from .helpers import (
+from mne_tools.helpers import (
     IMPORT_MODULE_NAME_MAPPING,
     get_bad_deps_message,
     get_deps_to_check,
