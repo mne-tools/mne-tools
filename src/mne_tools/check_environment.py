@@ -82,6 +82,7 @@ def main():
         # environment.
         if mod_name == "python":
             env_ver = sys.version_info[:3]  # take major, minor, and micro info
+            env_ver = ".".join(str(x) for x in env_ver)
         else:
             try:
                 importlib.import_module(mod_import_name)
