@@ -381,6 +381,16 @@
       role: maintain
     - repo: mne-tools.github.io
       role: maintain
+    - repo: refleak
+      role: maintain
+
+- name: Refleak Maintainers
+  description: ''
+  members:
+    - larsoner
+  permissions:
+    - repo: refleak
+      role: maintain
 
 - name: Sprinters
   description: For attendees at MNE sprints; necessary for write access to org-level project boards
