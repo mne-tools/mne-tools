@@ -83,21 +83,37 @@ def main():
         {mod["name"]: mod["version"] for mod in lockfile_data["packages"]}
     )
 
-    # Check that the versions in the lockfile match the min versions in pyproject.toml
+    # Check that the versions in the lockfile match the minimum versions in pyproject
+    # For modules, uv's `lowest-direct` option will resolve to the lowest
+    # major.minor.micro version, even if a micro version isn't specified. E.g., if
+    # `pyproject.toml` asks for numpy >= 1.26, the lockfile will have 1.26.0.
+    # However, the non-lowest micro version of a module may be selected for
+    # compatibility reasons. E.g., if `pyproject.toml` asks for pandas >= 2.2 and numpy
+    # >= 2.0, pandas 2.2.2 will be placed in the lockfile, as that was the first version
+    # to support numpy 2.0. Non-lowest micro versions of modules may also not be used if
+    # they were yanked.
+    # Therefore, if the micro version of a module isn't specified in `pyproject.toml`,
+    # we don't check the micro version of the module in the environment.
     bad_missing = []
     bad_version = []
     for dep in check_deps:
         mod_name, pyproject_ver = get_min_pinned_ver(dep)
         if pyproject_ver is None:
             continue  # no min version specified, so no check needed
+        pyproject_ver = Version(pyproject_ver)
         name = IMPORT_MODULE_NAME_MAPPING.get(mod_name, mod_name)
 
         if name not in lockfile_modules.keys():
             bad_missing.append(name)
             continue
         lockfile_ver = lockfile_modules[name]
+        lockfile_ver = Version(lockfile_ver)
 
-        if Version(lockfile_ver) != Version(pyproject_ver):
+        # Discard micro info from lockfile version if it's not specified in pyproject
+        if len(pyproject_ver.release) == 2:
+            lockfile_ver = Version(f"{lockfile_ver.major}.{lockfile_ver.minor}")
+
+        if lockfile_ver != pyproject_ver:
             bad_version.append(
                 f"lower pin on {name} in `pyproject.toml` is {pyproject_ver}, but the "
                 f"lockfile has {lockfile_ver}"
