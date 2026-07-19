@@ -35,7 +35,7 @@ jobs:
       - uses: actions/setup-python@v6.3.0
         with:
           python-version: '3.14'
-      - run: .tools/setup-xvfb.sh
+      - run: .tools/setup_xvfb.sh
         name: 'Setup Xvfb'
       - run: |
           python -m pip install --upgrade pip
