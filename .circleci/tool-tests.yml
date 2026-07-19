@@ -1,0 +1,71 @@
+version: 2.1
+
+_machine_image: &machine_image
+  image: ubuntu-2604:2026.05.1
+
+jobs:
+  check-qt-import:
+    machine:
+      <<: *machine_image
+    resource_class: medium
+    steps:
+      # Checkout source code
+      - restore_cache:
+          keys:
+            - source-cache
+      - checkout:
+          method: full
+      - save_cache:
+          key: source-cache
+          paths:
+            - ".git"
+
+      - run:
+          name: Setup Python
+          command: |
+            sudo apt install -qq python3-venv
+            python -m venv ~/python_env
+            echo "export PATH=~/.local/bin/:$PATH" >> $BASH_ENV
+            echo "export DISPLAY=:99" >> $BASH_ENV
+            echo "source ~/python_env/bin/activate" >> $BASH_ENV
+            mkdir -p ~/.local/bin
+            ln -s ~/python_env/bin/python ~/.local/bin/python
+
+      - run:
+          name: Setup Xvfb
+          command: ./tools/setup_xvfb.sh
+
+      # Load pip cache
+      - restore_cache:
+          keys:
+            - pip-cache
+      - restore_cache:
+          keys:
+            - user-install-bin-cache-310
+
+      - run:
+          name: Install PySide6
+          command: |
+            python -m pip install --upgrade pip
+            python -m pip install PySide6
+
+      # Save pip cache
+      - save_cache:
+          key: pip-cache
+          paths:
+            - ~/.cache/pip
+      - save_cache:
+          key: user-install-bin-cache-310
+          paths:
+            - ~/.local/lib/python3.10/site-packages
+            - ~/.local/bin
+
+      - run:
+          name: Check PySide6 importable
+          command: bash ./tools/check_qt_import.sh PySide6
+
+workflows:
+  default:
+    jobs:
+      - check-qt-import:
+          name: check-qt-import
