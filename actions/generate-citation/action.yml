@@ -2,6 +2,7 @@ name: 'MNE-Tools: Generate project citation'
 description: 'Generate project citation.'
 author: 'MNE-Tools'
 inputs:
+  # For descriptions of the inputs, see `src/mne_tools/generate_citation.py`
   project-root:
     required: false
     default: ${{ github.workspace }}
@@ -10,7 +11,6 @@ inputs:
   release-date:
     required: false
     default: null
-  # For descriptions of the inputs, see `src/mne_tools/generate_citation.py`
 runs:
   using: composite
   steps:

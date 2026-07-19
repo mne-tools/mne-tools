@@ -2,6 +2,7 @@ name: 'MNE-Tools: Check old lockfile of project'
 description: 'Check the old lockfile of the project.'
 author: 'MNE-Tools'
 inputs:
+  # For descriptions of the inputs, see `src/mne_tools/check_lockfile.py`
   project-root:
     required: false
     default: ${{ github.workspace }}
@@ -10,7 +11,6 @@ inputs:
   groups:
     required: false
     default: null
-  # For descriptions of the inputs, see `src/mne_tools/check_lockfile.py`
 runs:
   using: composite
   steps:

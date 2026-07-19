@@ -2,6 +2,7 @@ name: 'MNE-Tools: Sync Dependencies to Environment File'
 description: 'Sync dependency information from `pyproject.toml` to `environment.yml`.'
 author: 'MNE-Tools'
 inputs:
+  # For descriptions of the inputs, see `src/mne_tools/sync_dependencies_to_environment_file.py`
   project-root:
     required: false
     default: ${{ github.workspace }}
@@ -20,7 +21,6 @@ inputs:
   requirements-overrides:
     required: false
     default: null
-  # For descriptions of the inputs, see `src/mne_tools/sync_dependencies_to_environment_file.py`
 runs:
   using: composite
   steps:
