@@ -23,8 +23,7 @@
 - name: FIFF-Constants Maintainers
   description: ''
   members:
-    - jnenonen
-    - mkajola
+    - jonnaglad
     - larsoner
   permissions:
     - repo: fiff-constants
@@ -79,18 +78,18 @@
     - repo: mne-connectivity
       role: maintain
 
-- name: MNE-CPP Maintainers
+- name: MNE-CPP Admins
   description: ''
   members:
     - chdinh
     - LorenzE
   permissions:
     - repo: mne-cpp
-      role: maintain
+      role: admin
     - repo: mne-cpp-presentations
-      role: maintain
+      role: admin
     - repo: mne-cpp-test-data
-      role: maintain
+      role: admin
 
 - name: MNE-CPP Collaborators
   description: ''
@@ -205,6 +204,14 @@
   permissions:
     - repo: mne-icalabel
       role: maintain
+
+- name: MNE-ICALabel Admins
+  description: ''
+  members:
+    - mscheltienne
+  permissions:
+    - repo: mne-icalabel
+      role: admin
 
 - name: MNE-Incubator Maintainers
   description: ''
@@ -360,6 +367,8 @@
       role: maintain
     - repo: mne-installers
       role: maintain
+    - repo: mne-kit-gui
+      role: maintain
     - repo: mne-nirs
       role: maintain
     - repo: mne-python
@@ -370,3 +379,22 @@
       role: maintain
     - repo: mne-tools
       role: maintain
+    - repo: mne-tools.github.io
+      role: maintain
+    - repo: refleak
+      role: maintain
+
+- name: Refleak Maintainers
+  description: ''
+  members:
+    - larsoner
+  permissions:
+    - repo: refleak
+      role: maintain
+
+- name: Sprinters
+  description: For attendees at MNE sprints; necessary for write access to org-level project boards
+  members:
+    - ASantosMayo
+    - LaetitiaG
+    - raphbrd
