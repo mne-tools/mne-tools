@@ -65,7 +65,7 @@ jobs:
           command: bash ./tools/check_qt_import.sh PySide6
 
 workflows:
-  default:
+  tool-tests:
     jobs:
       - check-qt-import:
           name: check-qt-import
