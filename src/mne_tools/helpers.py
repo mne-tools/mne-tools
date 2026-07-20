@@ -13,7 +13,11 @@ from packaging.requirements import Requirement
 
 logger = logging.getLogger(__name__)
 
-MODULE_IMPORT_NAME_MAPPING = {"scikit-learn": "sklearn", "lazy-loader": "lazy_loader"}
+MODULE_IMPORT_NAME_MAPPING = {
+    "scikit-learn": "sklearn",
+    "lazy-loader": "lazy_loader",
+    "typing-extensions": "typing_extensions",
+}
 IMPORT_MODULE_NAME_MAPPING = {
     value: key for key, value in MODULE_IMPORT_NAME_MAPPING.items()
 }
