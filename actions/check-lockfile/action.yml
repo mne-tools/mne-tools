@@ -1,0 +1,43 @@
+name: 'MNE-Tools: Check old lockfile of project'
+description: 'Check the old lockfile of the project.'
+author: 'MNE-Tools'
+inputs:
+  # For descriptions of the inputs, see `src/mne_tools/check_lockfile.py`
+  project-root:
+    required: false
+    default: ${{ github.workspace }}
+  lockfile-path:
+    required: true
+  groups:
+    required: false
+    default: null
+runs:
+  using: composite
+  steps:
+    - name: Install Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.14'
+    - name: Get root directory of the action
+      run: echo "ACTION_ROOT=$(dirname $(dirname ${{ github.action_path }}))" >> ${GITHUB_ENV}
+      shell: bash
+    - name: Install actions dependencies
+      run: pip install -e ${{ env.ACTION_ROOT }}
+      shell: bash
+    - name: Check lockfile
+      run: |
+        python -m mne_tools.check_lockfile \
+          "${{ inputs.project-root }}" \
+          "${{ inputs.lockfile-path }}" \
+          --groups "${{ inputs.groups }}"
+      shell: bash
+    - name: Report failure
+      if: failure()
+      run: |
+        echo "Lockfile check failed. Please see the logs above for details."
+      shell: bash
+    - name: Report success
+      if: success()
+      run: |
+        echo "Lockfile check passed."
+      shell: bash

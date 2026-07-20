@@ -1,0 +1,30 @@
+name: 'MNE-Tools: Sync Dependencies to README'
+description: 'Sync dependency information from `pyproject.toml` to `README.rst`.'
+author: 'MNE-Tools'
+inputs:
+  # For descriptions of the inputs, see `src/mne_tools/sync_dependencies_to_readme.py`
+  project-root:
+    required: false
+    default: ${{ github.workspace }}
+  ignore-upper-pins:
+    required: false
+    default: null
+runs:
+  using: composite
+  steps:
+    - name: Install Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.14'
+    - name: Get root directory of the action
+      run: echo "ACTION_ROOT=$(dirname $(dirname ${{ github.action_path }}))" >> ${GITHUB_ENV}
+      shell: bash
+    - name: Install actions dependencies
+      run: pip install -e ${{ env.ACTION_ROOT }}
+      shell: bash
+    - name: Sync dependencies to README
+      run: |
+        python -m mne_tools.sync_dependencies_to_readme \
+          "${{ inputs.project-root }}" \
+          --ignore-upper-pins "${{ inputs.ignore-upper-pins }}"
+      shell: bash

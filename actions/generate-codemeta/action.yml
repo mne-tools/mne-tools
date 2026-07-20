@@ -1,0 +1,40 @@
+name: 'MNE-Tools: Generate project codemeta'
+description: 'Generate project codemeta information.'
+author: 'MNE-Tools'
+inputs:
+  # For descriptions of the inputs, see `src/mne_tools/generate_codemeta.py`
+  project-root:
+    required: false
+    default: ${{ github.workspace }}
+  release-version:
+    required: true
+  data-modified:
+    required: false
+    default: null
+runs:
+  using: composite
+  steps:
+    - name: Install Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.14'
+    - name: Get root directory of the action
+      run: echo "ACTION_ROOT=$(dirname $(dirname ${{ github.action_path }}))" >> ${GITHUB_ENV}
+      shell: bash
+    - name: Install actions dependencies
+      run: pip install -e ${{ env.ACTION_ROOT }}
+      shell: bash
+    - name: Ensure full git history for contributor extraction
+      working-directory: ${{ inputs.project-root }}
+      run: |
+        if git rev-parse --is-shallow-repository | grep -q true; then
+          git fetch --unshallow --tags --force
+        fi
+      shell: bash
+    - name: Generate codemeta
+      run: |
+        python -m mne_tools.generate_codemeta \
+          "${{ inputs.project-root }}" \
+          "${{ inputs.release-version }}" \
+          --date-modified "${{ inputs.date-modified }}"
+      shell: bash
