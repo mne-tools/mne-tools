@@ -1,5 +1,5 @@
 name: 'MNE-Tools: Check Qt import'
-description: 'Check that a Qt binding is available in Python.'
+description: 'Check that a Qt binding is available in Python. This action assumes that the Python enviroment which is expected to have an inportable Qt binding is already installed and activated in the calling workflow.'
 author: 'MNE-Tools'
 inputs:
   qt-backend:

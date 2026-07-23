@@ -1,5 +1,5 @@
 name: 'MNE-Tools: Check old environment of project'
-description: 'Check the old environment of the project.'
+description: 'Check the old environment of the project. This action assumes that the Python enviroment to be checked is already installed and activated in the calling workflow, with pip available.'
 author: 'MNE-Tools'
 inputs:
   # For descriptions of the inputs, see `src/mne_tools/check_environment.py`
