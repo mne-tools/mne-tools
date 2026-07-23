@@ -10,7 +10,7 @@ runs:
   steps:
     - name: Add Python environment to PATH
       run: |
-        echo "$ dirname $(which python):$PATH" >> "$GITHUB_PATH"
+        echo "$(dirname "$(command -v python)")" >> "$GITHUB_PATH"
       shell: bash
     - name: Get root directory of the action
       run: |
