@@ -2,12 +2,19 @@ name: 'MNE-Tools: Check Qt import'
 description: 'Check that a Qt binding is available in Python.'
 author: 'MNE-Tools'
 inputs:
+  project-root:
+    required: false
+    default: ${{ github.workspace }}
+    description: 'The root directory of the project containing a Python venv.'
   qt-backend:
     required: true
     description: 'The Qt backend to check is importable (e.g., PySide6, PyQt6).'
 runs:
   using: composite
   steps:
+    - name: Activate project environment
+      run: echo "PATH=${{ inputs.project-root }}/.venv/bin:$PATH" >> $GITHUB_ENV
+      shell: bash
     - name: Get root directory of the action
       run: echo "ACTION_ROOT=$(dirname $(dirname ${{ github.action_path }}))" >> ${GITHUB_ENV}
       shell: bash
