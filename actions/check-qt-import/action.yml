@@ -2,9 +2,6 @@ name: 'MNE-Tools: Check Qt import'
 description: 'Check that a Qt binding is available in Python.'
 author: 'MNE-Tools'
 inputs:
-  python-env-root:
-    required: true
-    description: 'The root directory of the Python environment prefix, such as a venv or conda environment.'
   qt-backend:
     required: true
     description: 'The Qt backend to check is importable (e.g., PySide6, PyQt6).'
@@ -13,7 +10,7 @@ runs:
   steps:
     - name: Add Python environment to PATH
       run: |
-        echo "${{ inputs.python-env-root }}/bin" >> "$GITHUB_PATH"
+        echo "$ dirname $(which python):$PATH" >> "$GITHUB_PATH"
       shell: bash
     - name: Get root directory of the action
       run: |
