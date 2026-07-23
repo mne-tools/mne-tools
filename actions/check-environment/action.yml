@@ -12,9 +12,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Activate project environment
-      run: echo "PATH=${{ inputs.project-root }}/.venv/bin:$PATH" >> $GITHUB_ENV
-      shell: bash
     - name: Get root directory of the action
       run: |
         action_path="${GITHUB_ACTION_PATH//\\//}"
