@@ -42,5 +42,5 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install PySide6
         name: 'Install PySide6'
-      - run: ./tools/check_qt_import.sh PySide6
+      - run: bash ./tools/check_qt_import.sh PySide6
         name: 'Check PySide6 importable'
