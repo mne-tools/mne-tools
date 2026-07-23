@@ -1,0 +1,13 @@
+name: 'MNE-Tools: Setup Xvfb'
+description: 'Setup Xvfb for headless testing on Ubuntu 24.04 or 26.04 on display 99.'
+author: 'MNE-Tools'
+runs:
+  using: composite
+  steps:
+    - name: Get root directory of the action
+      run: echo "ACTION_ROOT=$(dirname $(dirname ${{ github.action_path }}))" >> ${GITHUB_ENV}
+      shell: bash
+    - name: Setup Xvfb
+      run: |
+        ${{ env.ACTION_ROOT }}/tools/setup_xvfb.sh
+      shell: bash
