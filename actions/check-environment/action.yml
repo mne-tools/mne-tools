@@ -16,7 +16,9 @@ runs:
       run: echo "PATH=${{ inputs.project-root }}/.venv/bin:$PATH" >> $GITHUB_ENV
       shell: bash
     - name: Get root directory of the action
-      run: echo "ACTION_ROOT=$(dirname $(dirname ${{ github.action_path }}))" >> ${GITHUB_ENV}
+      run: |
+        action_path="${GITHUB_ACTION_PATH//\\//}"
+        echo "ACTION_ROOT=$(dirname "$(dirname "$action_path")")" >> "$GITHUB_ENV"
       shell: bash
     - name: Install actions dependencies
       run: pip install -e ${{ env.ACTION_ROOT }}

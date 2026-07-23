@@ -16,7 +16,9 @@ runs:
         echo "${{ inputs.python-env-root }}/bin" >> "$GITHUB_PATH"
       shell: bash
     - name: Get root directory of the action
-      run: echo "ACTION_ROOT=$(dirname $(dirname ${{ github.action_path }}))" >> ${GITHUB_ENV}
+      run: |
+        action_path="${GITHUB_ACTION_PATH//\\//}"
+        echo "ACTION_ROOT=$(dirname "$(dirname "$action_path")")" >> "$GITHUB_ENV"
       shell: bash
     - name: Check Qt import
       run: |
