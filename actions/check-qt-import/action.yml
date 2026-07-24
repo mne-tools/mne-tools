@@ -1,0 +1,19 @@
+name: 'MNE-Tools: Check Qt import'
+description: 'Check that a Qt binding is available in Python. This action assumes that the Python enviroment which is expected to have an inportable Qt binding is already installed and activated in the calling workflow.'
+author: 'MNE-Tools'
+inputs:
+  qt-backend:
+    required: true
+    description: 'The Qt backend to check is importable (e.g., PySide6, PyQt6).'
+runs:
+  using: composite
+  steps:
+    - name: Get root directory of the action
+      run: |
+        action_path="${GITHUB_ACTION_PATH//\\//}"
+        echo "ACTION_ROOT=$(dirname "$(dirname "$action_path")")" >> "$GITHUB_ENV"
+      shell: bash
+    - name: Check Qt import
+      run: |
+        ${{ env.ACTION_ROOT }}/tools/check_qt_import.sh ${{ inputs.qt-backend }}
+      shell: bash

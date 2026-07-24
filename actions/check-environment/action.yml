@@ -1,5 +1,5 @@
 name: 'MNE-Tools: Check old environment of project'
-description: 'Check the old environment of the project.'
+description: 'Check the old environment of the project. This action assumes that the Python enviroment to be checked is already installed and activated in the calling workflow, with pip available.'
 author: 'MNE-Tools'
 inputs:
   # For descriptions of the inputs, see `src/mne_tools/check_environment.py`
@@ -12,11 +12,10 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Activate project environment
-      run: echo "PATH=${{ inputs.project-root }}/.venv/bin:$PATH" >> $GITHUB_ENV
-      shell: bash
     - name: Get root directory of the action
-      run: echo "ACTION_ROOT=$(dirname $(dirname ${{ github.action_path }}))" >> ${GITHUB_ENV}
+      run: |
+        action_path="${GITHUB_ACTION_PATH//\\//}"
+        echo "ACTION_ROOT=$(dirname "$(dirname "$action_path")")" >> "$GITHUB_ENV"
       shell: bash
     - name: Install actions dependencies
       run: pip install -e ${{ env.ACTION_ROOT }}
