@@ -29,11 +29,11 @@ jobs:
           - os: ubuntu-24.04
           - os: ubuntu-26.04
     steps:
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-python@v6.3.0
+      - uses: actions/setup-python@v7.0.0
         with:
           python-version: '3.14'
       - run: ./tools/setup_xvfb.sh
