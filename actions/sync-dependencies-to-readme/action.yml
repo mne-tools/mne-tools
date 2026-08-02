@@ -12,14 +12,13 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@v7
     - name: Install Python
       uses: actions/setup-python@v6
       with:
         python-version: '3.14'
     - name: Get root directory of the action
       id: action-root
-      uses: ./../get-action-root
+      uses: $/actions/get-action-root
     - name: Install actions dependencies
       run: pip install -e ${{ steps.action-root.outputs.action-root }}
       shell: bash

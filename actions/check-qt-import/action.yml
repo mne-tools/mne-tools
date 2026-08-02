@@ -8,10 +8,9 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@v7
     - name: Get root directory of the action
       id: action-root
-      uses: ./../get-action-root
+      uses: $/actions/get-action-root
     - name: Check Qt import
       run: |
         ${{ steps.action-root.outputs.action-root }}/tools/check_qt_import.sh ${{ inputs.qt-backend }}
