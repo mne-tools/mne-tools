@@ -12,6 +12,7 @@ inputs:
 runs:
   using: composite
   steps:
+    - uses: actions/checkout@v7
     - name: Get root directory of the action
       id: action-root
       uses: ./../get-action-root
