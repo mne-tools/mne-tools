@@ -13,12 +13,10 @@ runs:
   using: composite
   steps:
     - name: Get root directory of the action
-      run: |
-        action_path="${GITHUB_ACTION_PATH//\\//}"
-        echo "ACTION_ROOT=$(dirname "$(dirname "$action_path")")" >> "$GITHUB_ENV"
-      shell: bash
+      id: action-root
+      uses: ./../get-action-root
     - name: Install actions dependencies
-      run: pip install -e ${{ env.ACTION_ROOT }}
+      run: pip install -e ${{ steps.action-root.outputs.action-root }}
       shell: bash
     - name: Check environment
       run: |
