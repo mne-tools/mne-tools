@@ -11,6 +11,6 @@ runs:
     - id: resolve-root
       name: Resolve action root
       run: |
-        action_path="${GITHUB_ACTION_PATH//\\//}"
+        action_path="${GITHUB_ACTION_PATH}"
         echo "action-root=$(dirname "$(dirname "$action_path")")" >> "$GITHUB_OUTPUT"
       shell: bash
