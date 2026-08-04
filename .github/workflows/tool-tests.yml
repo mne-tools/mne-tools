@@ -44,3 +44,34 @@ jobs:
         name: 'Install PySide6'
       - run: bash ./tools/check_qt_import.sh PySide6
         name: 'Check PySide6 importable'
+  check-action-root:
+    name: '${{ matrix.os }}'
+    timeout-minutes: 10
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash -el {0}
+    env:
+      CI_OS_NAME: '${{ matrix.os }}'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+          - os: windows-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Get root directory of the action
+        id: action-root
+        uses: $/actions/get-action-root
+      - name: Check source directory exists
+        run: |
+          if [ ! -d "${{ steps.action-root.outputs.action-root }}/src/mne_tools" ]; then
+            echo "Source directory does not exist"
+            exit 1
+          else
+            echo "Source directory exists"
+          fi
