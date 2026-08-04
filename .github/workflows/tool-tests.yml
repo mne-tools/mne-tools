@@ -69,7 +69,7 @@ jobs:
         uses: $/actions/get-action-root
       - name: Check source directory exists
         run: |
-          if [ ! -d "${{ steps.action-root.outputs.action-root }}/src/mne_tools" ]; then
+          if [ ! -d "${{ steps.action-root.outputs.action-root }}/src/mne_tool" ]; then
             echo "Source directory does not exist"
             exit 1
           else
