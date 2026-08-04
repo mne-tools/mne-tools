@@ -19,10 +19,10 @@ runs:
       with:
         python-version: '3.14'
     - name: Get root directory of the action
-      run: echo "ACTION_ROOT=$(dirname $(dirname ${{ github.action_path }}))" >> ${GITHUB_ENV}
-      shell: bash
+      id: action-root
+      uses: $/actions/get-action-root
     - name: Install actions dependencies
-      run: pip install -e ${{ env.ACTION_ROOT }}
+      run: pip install -e ${{ steps.action-root.outputs.action-root }}
       shell: bash
     - name: Check lockfile
       run: |

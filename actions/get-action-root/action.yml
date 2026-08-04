@@ -1,0 +1,16 @@
+name: 'MNE-Tools: Get action root'
+description: 'Expose the repository root for local composite actions as an output.'
+author: 'MNE-Tools'
+outputs:
+  action-root:
+    description: 'The repository root containing the actions and tools directories.'
+    value: ${{ steps.resolve-root.outputs.action-root }}
+runs:
+  using: composite
+  steps:
+    - id: resolve-root
+      name: Resolve action root
+      run: |
+        action_path="${GITHUB_ACTION_PATH//\\//}"
+        echo "action-root=$(dirname "$(dirname "$action_path")")" >> "$GITHUB_OUTPUT"
+      shell: bash
