@@ -132,10 +132,11 @@ def get_contributor_names_emails(
         .split("\n")
     )
 
+    bots = ["[bot]", "Lumberbot"]
     names_emails = [
         parse_name_email(name_blob=line, compound_surnames=compound_surnames)
         for line in git_shortlog
-        if "[bot]" not in line
+        if not any(bot in line for bot in bots)
     ]
 
     return names_emails
@@ -242,7 +243,7 @@ def get_min_pinned_ver(req: str) -> tuple[str, str | None]:
         raise ValueError(
             f"Expected exactly 1 '>=' specifier in `pyproject.toml` for module {name} "
             f"with version specifications, but found {len(ge_specs)}"
-            f"{': ' + ', '.join([str(ge_spec) for ge_spec in ge_specs]) if len(ge_specs) > 0 else ''}."  # noqa: E501
+            f"{': ' + ', '.join([str(ge_spec) for ge_spec in ge_specs]) if len(ge_specs) > 0 else ''}."
         )  # can't use \ to break f-string statements until python 3.12
 
     return name, ge_specs[0].version
