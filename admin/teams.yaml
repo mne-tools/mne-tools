@@ -352,6 +352,16 @@
     - repo: mne-rsa
       role: maintain
 
+- name: MNE-Tools Maintainers
+  description: ''
+  members:
+    - drammock
+    - larsoner
+    - tsbinns
+  permissions:
+    - repo: mne-tools
+      role: maintain
+
 - name: MNE-bot
   description: ''
   members:
