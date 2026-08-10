@@ -11,7 +11,12 @@ import requests
 from packaging.requirements import Requirement
 from packaging.specifiers import SpecifierSet
 
-from mne_tools.helpers import prettify_pins, read_pyproject, split_optional_args
+from mne_tools.helpers import (
+    get_display_name,
+    prettify_pins,
+    read_pyproject,
+    split_optional_args,
+)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -113,10 +118,11 @@ def main():
     # Construct the rST
     core_deps_bullets = []
     for key, url in core_deps_urls.items():
+        name = get_display_name(key)
         if url is not None:
-            core_deps_bullets.append(f"- `{key} <{url}>`__{core_deps_pins[key]}")
+            core_deps_bullets.append(f"- `{name} <{url}>`__{core_deps_pins[key]}")
         else:
-            core_deps_bullets.append(f"- {key}{core_deps_pins[key]}")
+            core_deps_bullets.append(f"- {name}{core_deps_pins[key]}")
 
     # Rewrite the README file
     readme_path = os.path.join(project_root, "README.rst")

@@ -10,6 +10,7 @@ from datetime import date
 import tomlkit
 import yaml
 from packaging.requirements import Requirement
+from packaging.utils import canonicalize_name
 
 logger = logging.getLogger(__name__)
 
@@ -23,6 +24,50 @@ IMPORT_MODULE_NAME_MAPPING = {
 }
 
 PIP_CONDA_MAPPING = {"neo": "python-neo"}
+
+# How projects style their own names, for display in human-facing places like READMEs.
+# Keyed by `canonicalize_name`; only entries that differ from the canonical name.
+DISPLAY_NAME_MAPPING = {
+    "dipy": "DIPY",
+    "ipython": "IPython",
+    "jinja2": "Jinja2",
+    "matplotlib": "Matplotlib",
+    "mne": "MNE",
+    "neo": "Neo",
+    "nibabel": "NiBabel",
+    "numba": "Numba",
+    "numpy": "NumPy",
+    "openmeeg": "OpenMEEG",
+    "pillow": "Pillow",
+    "pooch": "Pooch",
+    "pyqt6": "PyQt6",
+    "pyqtgraph": "PyQtGraph",
+    "pyside6": "PySide6",
+    "python": "Python",
+    "pyvista": "PyVista",
+    "qtpy": "QtPy",
+    "scipy": "SciPy",
+    "vtk": "VTK",
+}
+
+
+def get_display_name(name: str) -> str:
+    """Get a package name as the project itself styles it.
+
+    Parameters
+    ----------
+    name : str
+        The package name, as written in e.g. `pyproject.toml`.
+
+    Returns
+    -------
+    display_name : str
+        The name to show in human-facing output. Packages not in
+        `DISPLAY_NAME_MAPPING` fall back to their canonical name, so that e.g.
+        `lazy_loader` is shown as `lazy-loader`.
+    """
+    canonical = canonicalize_name(name)
+    return DISPLAY_NAME_MAPPING.get(canonical, canonical)
 
 
 def check_release_version(version: str) -> None:
