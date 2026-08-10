@@ -9,11 +9,10 @@ from argparse import SUPPRESS, ArgumentParser
 
 import requests
 from packaging.requirements import Requirement
-from packaging.specifiers import SpecifierSet
 
 from mne_tools.helpers import (
+    format_dependency_pins,
     get_display_name,
-    prettify_pins,
     read_pyproject,
     split_optional_args,
 )
@@ -58,17 +57,10 @@ def main():
     core_deps_pins = dict()
     for dep in core_deps:
         req = Requirement(dep)
-        specifier = req.specifier
-        # Ignore upper pins when specified (e.g., when only important for devs).
-        # Drop them before prettifying, otherwise the separator they were joined with
-        # is left behind (e.g. ">=2.0,<3" -> " ≥ 2.0,").
-        if req.name in ignore_upper_pins:
-            specifier = SpecifierSet(
-                ",".join(
-                    str(spec) for spec in specifier if spec.operator not in ("<", "<=")
-                )
-            )
-        core_deps_pins[req.name] = prettify_pins(str(specifier))
+        # Ignore upper pins when specified (e.g., when only important for devs)
+        core_deps_pins[req.name] = format_dependency_pins(
+            req, ignore_upper_pin=req.name in ignore_upper_pins
+        )
 
     # Get dependency URLs
     core_deps_urls = {dep: None for dep in core_deps_pins.keys()}

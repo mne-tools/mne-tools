@@ -10,6 +10,7 @@ from datetime import date
 import tomlkit
 import yaml
 from packaging.requirements import Requirement
+from packaging.specifiers import SpecifierSet
 from packaging.utils import canonicalize_name
 
 logger = logging.getLogger(__name__)
@@ -77,6 +78,37 @@ def get_display_name(name: str) -> str:
     """
     canonical = canonicalize_name(name)
     return DISPLAY_NAME_MAPPING.get(canonical, canonical)
+
+
+def format_dependency_pins(
+    requirement: Requirement, ignore_upper_pin: bool = False
+) -> str:
+    """Format a dependency's version specifiers for display.
+
+    Parameters
+    ----------
+    requirement : Requirement
+        The dependency to format the version specifiers of.
+    ignore_upper_pin : bool
+        Whether to drop upper bounds (`<` and `<=`), e.g. when they only matter to
+        developers.
+
+    Returns
+    -------
+    pins : str
+        The prettified version specifiers, or an empty string if there are none.
+    """
+    specifier = requirement.specifier
+    # Drop upper bounds before prettifying, not after: `prettify_pins` joins the
+    # specifiers with commas, so removing one from its output leaves the separator
+    # behind and discards whatever followed it
+    if ignore_upper_pin:
+        specifier = SpecifierSet(
+            ",".join(
+                str(spec) for spec in specifier if spec.operator not in ("<", "<=")
+            )
+        )
+    return prettify_pins(str(specifier))
 
 
 def format_operating_systems(classifiers: list[str]) -> list[str]:
