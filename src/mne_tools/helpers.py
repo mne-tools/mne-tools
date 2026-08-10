@@ -50,6 +50,15 @@ DISPLAY_NAME_MAPPING = {
     "vtk": "VTK",
 }
 
+# Trove classifiers spell some operating systems differently to the projects that run
+# on them; keyed by the last `::`-separated component of the classifier.
+OPERATING_SYSTEM_MAPPING = {
+    "MacOS": "macOS",
+    "MacOS X": "macOS",
+}
+# Classifiers naming a family of operating systems rather than a single one
+OPERATING_SYSTEM_FAMILIES = {"Microsoft", "OS Independent", "POSIX", "Unix"}
+
 
 def get_display_name(name: str) -> str:
     """Get a package name as the project itself styles it.
@@ -68,6 +77,41 @@ def get_display_name(name: str) -> str:
     """
     canonical = canonicalize_name(name)
     return DISPLAY_NAME_MAPPING.get(canonical, canonical)
+
+
+def format_operating_systems(classifiers: list[str]) -> list[str]:
+    """Get the operating systems named by a project's trove classifiers.
+
+    Parameters
+    ----------
+    classifiers : list of str
+        The project's trove classifiers, e.g. from `pyproject.toml`. Entries that
+        are not `Operating System` classifiers are ignored.
+
+    Returns
+    -------
+    operating_systems : list of str
+        The operating system names, sorted.
+    """
+    paths = [
+        tuple(part.strip() for part in classifier.split("::")[1:])
+        for classifier in classifiers
+        if classifier.startswith("Operating System")
+    ]
+    # A classifier adds nothing if another one refines it, e.g. `POSIX` alongside
+    # `POSIX :: Linux`
+    paths = [
+        path
+        for path in paths
+        if not any(
+            other[: len(path)] == path and len(other) > len(path) for other in paths
+        )
+    ]
+    names = {OPERATING_SYSTEM_MAPPING.get(path[-1], path[-1]) for path in paths}
+    # Families are only informative when nothing more specific was declared
+    if names - OPERATING_SYSTEM_FAMILIES:
+        names -= OPERATING_SYSTEM_FAMILIES
+    return sorted(names)
 
 
 def check_release_version(version: str) -> None:
