@@ -10,6 +10,7 @@ from datetime import date
 from mne_tools.helpers import (
     check_date_format,
     check_release_version,
+    format_operating_systems,
     get_contributor_names_emails,
     read_extended_metadata,
     read_pyproject,
@@ -87,12 +88,7 @@ def main():
     )
 
     # Format operating systems
-    operating_systems = [
-        opsys for opsys in classifiers if opsys.startswith("Operating System")
-    ]
-    operating_systems = sorted(
-        list({opsys.split("::")[-1].strip() for opsys in operating_systems})
-    )
+    operating_systems = format_operating_systems(classifiers)
 
     # Get dependencies and format
     dependencies = [f"python {pyproject['project']['requires-python']}"]
@@ -122,9 +118,9 @@ def main():
         "developmentStatus": "active",
     }
     if extended_metadata.get("preferred_citation") is not None:
-        codemeta_contents["referencePublication"] = extended_metadata[
-            "preferred_citation"
-        ]["doi"]
+        # codemeta expects a URL here, not a bare DOI
+        doi = extended_metadata["preferred_citation"]["doi"]
+        codemeta_contents["referencePublication"] = f"https://doi.org/{doi}"
     codemeta_contents["keywords"] = keywords
     codemeta_contents["programmingLanguage"] = programming_languages
     codemeta_contents["operatingSystem"] = operating_systems

@@ -10,6 +10,8 @@ from datetime import date
 import tomlkit
 import yaml
 from packaging.requirements import Requirement
+from packaging.specifiers import SpecifierSet
+from packaging.utils import canonicalize_name
 
 logger = logging.getLogger(__name__)
 
@@ -23,6 +25,125 @@ IMPORT_MODULE_NAME_MAPPING = {
 }
 
 PIP_CONDA_MAPPING = {"neo": "python-neo"}
+
+# How projects style their own names, for display in human-facing places like READMEs.
+# Keyed by `canonicalize_name`; only entries that differ from the canonical name.
+DISPLAY_NAME_MAPPING = {
+    "dipy": "DIPY",
+    "ipython": "IPython",
+    "jinja2": "Jinja2",
+    "matplotlib": "Matplotlib",
+    "mne": "MNE",
+    "neo": "Neo",
+    "nibabel": "NiBabel",
+    "numba": "Numba",
+    "numpy": "NumPy",
+    "openmeeg": "OpenMEEG",
+    "pillow": "Pillow",
+    "pooch": "Pooch",
+    "pyqt6": "PyQt6",
+    "pyqtgraph": "PyQtGraph",
+    "pyside6": "PySide6",
+    "python": "Python",
+    "pyvista": "PyVista",
+    "qtpy": "QtPy",
+    "scipy": "SciPy",
+    "vtk": "VTK",
+}
+
+# Trove classifiers spell some operating systems differently to the projects that run
+# on them; keyed by the last `::`-separated component of the classifier.
+OPERATING_SYSTEM_MAPPING = {
+    "MacOS": "macOS",
+    "MacOS X": "macOS",
+}
+# Classifiers naming a family of operating systems rather than a single one
+OPERATING_SYSTEM_FAMILIES = {"Microsoft", "OS Independent", "POSIX", "Unix"}
+
+
+def get_display_name(name: str) -> str:
+    """Get a package name as the project itself styles it.
+
+    Parameters
+    ----------
+    name : str
+        The package name, as written in e.g. `pyproject.toml`.
+
+    Returns
+    -------
+    display_name : str
+        The name to show in human-facing output. Packages not in
+        `DISPLAY_NAME_MAPPING` fall back to their canonical name, so that e.g.
+        `lazy_loader` is shown as `lazy-loader`.
+    """
+    canonical = canonicalize_name(name)
+    return DISPLAY_NAME_MAPPING.get(canonical, canonical)
+
+
+def format_dependency_pins(
+    requirement: Requirement, ignore_upper_pin: bool = False
+) -> str:
+    """Format a dependency's version specifiers for display.
+
+    Parameters
+    ----------
+    requirement : Requirement
+        The dependency to format the version specifiers of.
+    ignore_upper_pin : bool
+        Whether to drop upper bounds (`<` and `<=`), e.g. when they only matter to
+        developers.
+
+    Returns
+    -------
+    pins : str
+        The prettified version specifiers, or an empty string if there are none.
+    """
+    specifier = requirement.specifier
+    # Drop upper bounds before prettifying, not after: `prettify_pins` joins the
+    # specifiers with commas, so removing one from its output leaves the separator
+    # behind and discards whatever followed it
+    if ignore_upper_pin:
+        specifier = SpecifierSet(
+            ",".join(
+                str(spec) for spec in specifier if spec.operator not in ("<", "<=")
+            )
+        )
+    return prettify_pins(str(specifier))
+
+
+def format_operating_systems(classifiers: list[str]) -> list[str]:
+    """Get the operating systems named by a project's trove classifiers.
+
+    Parameters
+    ----------
+    classifiers : list of str
+        The project's trove classifiers, e.g. from `pyproject.toml`. Entries that
+        are not `Operating System` classifiers are ignored.
+
+    Returns
+    -------
+    operating_systems : list of str
+        The operating system names, sorted.
+    """
+    paths = [
+        tuple(part.strip() for part in classifier.split("::")[1:])
+        for classifier in classifiers
+        if classifier.startswith("Operating System")
+    ]
+    # A classifier adds nothing if another one refines it, e.g. `POSIX` alongside
+    # `POSIX :: Linux`
+    paths = [
+        path
+        for path in paths
+        if not any(
+            other[: len(path)] == path and len(other) > len(path) for other in paths
+        )
+    ]
+    names = {OPERATING_SYSTEM_MAPPING.get(path[-1], path[-1]) for path in paths}
+    # Families are only informative when nothing more specific was declared
+    if names - OPERATING_SYSTEM_FAMILIES:
+        names -= OPERATING_SYSTEM_FAMILIES
+    return sorted(names)
 
 
 def check_release_version(version: str) -> None:

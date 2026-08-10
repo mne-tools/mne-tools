@@ -10,7 +10,12 @@ from argparse import SUPPRESS, ArgumentParser
 import requests
 from packaging.requirements import Requirement
 
-from mne_tools.helpers import prettify_pins, read_pyproject, split_optional_args
+from mne_tools.helpers import (
+    format_dependency_pins,
+    get_display_name,
+    read_pyproject,
+    split_optional_args,
+)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -52,14 +57,10 @@ def main():
     core_deps_pins = dict()
     for dep in core_deps:
         req = Requirement(dep)
-        core_deps_pins[req.name] = prettify_pins(str(req.specifier))
-
-    # Ignore upper pins when specified (e.g., when only important for devs)
-    for dep in ignore_upper_pins:
-        if dep in core_deps_pins:
-            pin = core_deps_pins[dep]
-            if " < " in pin:
-                core_deps_pins[dep] = pin.split(" < ")[0]
+        # Ignore upper pins when specified (e.g., when only important for devs)
+        core_deps_pins[req.name] = format_dependency_pins(
+            req, ignore_upper_pin=req.name in ignore_upper_pins
+        )
 
     # Get dependency URLs
     core_deps_urls = {dep: None for dep in core_deps_pins.keys()}
@@ -109,12 +110,11 @@ def main():
     # Construct the rST
     core_deps_bullets = []
     for key, url in core_deps_urls.items():
+        name = get_display_name(key)
         if url is not None:
-            core_deps_bullets.append(
-                f"- `{key} <{url}>`__{core_deps_pins[key.lower()]}"
-            )
+            core_deps_bullets.append(f"- `{name} <{url}>`__{core_deps_pins[key]}")
         else:
-            core_deps_bullets.append(f"- {key}{core_deps_pins[key.lower()]}")
+            core_deps_bullets.append(f"- {name}{core_deps_pins[key]}")
 
     # Rewrite the README file
     readme_path = os.path.join(project_root, "README.rst")
