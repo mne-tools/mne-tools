@@ -9,6 +9,7 @@ from argparse import SUPPRESS, ArgumentParser
 
 import requests
 from packaging.requirements import Requirement
+from packaging.specifiers import SpecifierSet
 
 from mne_tools.helpers import prettify_pins, read_pyproject, split_optional_args
 
@@ -52,14 +53,17 @@ def main():
     core_deps_pins = dict()
     for dep in core_deps:
         req = Requirement(dep)
-        core_deps_pins[req.name] = prettify_pins(str(req.specifier))
-
-    # Ignore upper pins when specified (e.g., when only important for devs)
-    for dep in ignore_upper_pins:
-        if dep in core_deps_pins:
-            pin = core_deps_pins[dep]
-            if " < " in pin:
-                core_deps_pins[dep] = pin.split(" < ")[0]
+        specifier = req.specifier
+        # Ignore upper pins when specified (e.g., when only important for devs).
+        # Drop them before prettifying, otherwise the separator they were joined with
+        # is left behind (e.g. ">=2.0,<3" -> " ≥ 2.0,").
+        if req.name in ignore_upper_pins:
+            specifier = SpecifierSet(
+                ",".join(
+                    str(spec) for spec in specifier if spec.operator not in ("<", "<=")
+                )
+            )
+        core_deps_pins[req.name] = prettify_pins(str(specifier))
 
     # Get dependency URLs
     core_deps_urls = {dep: None for dep in core_deps_pins.keys()}
@@ -110,11 +114,9 @@ def main():
     core_deps_bullets = []
     for key, url in core_deps_urls.items():
         if url is not None:
-            core_deps_bullets.append(
-                f"- `{key} <{url}>`__{core_deps_pins[key.lower()]}"
-            )
+            core_deps_bullets.append(f"- `{key} <{url}>`__{core_deps_pins[key]}")
         else:
-            core_deps_bullets.append(f"- {key}{core_deps_pins[key.lower()]}")
+            core_deps_bullets.append(f"- {key}{core_deps_pins[key]}")
 
     # Rewrite the README file
     readme_path = os.path.join(project_root, "README.rst")
