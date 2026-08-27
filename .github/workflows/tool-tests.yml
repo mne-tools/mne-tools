@@ -100,3 +100,45 @@ jobs:
           else
             echo "Source directory exists"
           fi
+  setup-minimal-commands:
+    name: 'minimal commands (${{ matrix.os }})'
+    timeout-minutes: 20
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # platforms that have binaries
+          - os: ubuntu-latest
+            expected: 'true'
+          - os: macos-15-intel
+            expected: 'true'
+          # platforms that should silently no-op
+          - os: ubuntu-24.04-arm
+            expected: 'false'
+          - os: macos-latest  # arm64
+            expected: 'false'
+          - os: windows-latest
+            expected: 'false'
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - name: Setup minimal commands
+        id: minimal-commands
+        uses: $/actions/setup-minimal-commands
+      - name: Check the action did the right thing for this platform
+        run: |
+          set -eo pipefail
+          if [ "${{ steps.minimal-commands.outputs.installed }}" != "${{ matrix.expected }}" ]; then
+            echo "Expected installed=${{ matrix.expected }}, got '${{ steps.minimal-commands.outputs.installed }}'"
+            exit 1
+          fi
+          if [ "${{ matrix.expected }}" == "true" ]; then
+            # MNE_ROOT and PATH must survive into subsequent steps
+            test -n "$MNE_ROOT"
+            mne_process_raw --version
+          else
+            test -z "${MNE_ROOT:-}"
+          fi
+        shell: bash

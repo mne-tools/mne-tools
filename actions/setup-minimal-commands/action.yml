@@ -1,0 +1,48 @@
+name: 'MNE-Tools: Setup MNE-C minimal commands'
+description: 'Download, cache and set up the MNE-C "minimal commands" (mne_process_raw, mne_surf2bem, mri_average, mkheadsurf, ...). Binaries exist only for Linux x86_64 and macOS x86_64 (Intel); on any other platform this action is a no-op, so callers do not need an `if:` conditional.'
+author: 'MNE-Tools'
+outputs:
+  installed:
+    description: '"true" if the minimal commands were set up, "false" on platforms that have no binaries.'
+    value: ${{ steps.triage.outputs.installed }}
+runs:
+  using: composite
+  steps:
+    - name: Get root directory of the action
+      id: action-root
+      uses: $/actions/get-action-root
+    - name: Triage platform
+      id: triage
+      # The cache key hashes the install script, so bumping a download URL in it
+      # (or touching it in any other way) invalidates existing caches.
+      run: |
+        set -eo pipefail
+        SCRIPT="${{ steps.action-root.outputs.action-root }}/tools/get_minimal_commands.sh"
+        PLATFORM="$(uname -s)-$(uname -m)"
+        case "$PLATFORM" in
+          Linux-x86_64 | Darwin-x86_64)
+            if command -v sha256sum > /dev/null; then
+              SHA=$(sha256sum "$SCRIPT")
+            else
+              SHA=$(shasum -a 256 "$SCRIPT")
+            fi
+            echo "installed=true" | tee -a "$GITHUB_OUTPUT"
+            echo "key=minimal-cmds-${PLATFORM}-${SHA:0:8}" | tee -a "$GITHUB_OUTPUT"
+            ;;
+          *)
+            echo "::notice title=Minimal commands::No MNE-C minimal commands exist for ${PLATFORM}, skipping."
+            echo "installed=false" | tee -a "$GITHUB_OUTPUT"
+            echo "key=" | tee -a "$GITHUB_OUTPUT"
+            ;;
+        esac
+      shell: bash
+    - name: Cache minimal commands
+      uses: actions/cache@v6.1.0
+      with:
+        key: ${{ steps.triage.outputs.key }}
+        path: ~/minimal_cmds
+      if: steps.triage.outputs.installed == 'true'
+    - name: Setup minimal commands
+      run: ${{ steps.action-root.outputs.action-root }}/tools/get_minimal_commands.sh
+      if: steps.triage.outputs.installed == 'true'
+      shell: bash
