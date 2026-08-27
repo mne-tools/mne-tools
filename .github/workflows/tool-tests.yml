@@ -108,17 +108,17 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # platforms that have binaries
+          # platforms that have a bundle published
           - os: ubuntu-latest
             expected: 'true'
           - os: macos-15-intel
             expected: 'true'
+          - os: macos-latest  # arm64
+            expected: 'true'
+          - os: windows-latest
+            expected: 'true'
           # platforms that should silently no-op
           - os: ubuntu-24.04-arm
-            expected: 'false'
-          - os: macos-latest  # arm64
-            expected: 'false'
-          - os: windows-latest
             expected: 'false'
     steps:
       - uses: actions/checkout@v7.0.1
