@@ -94,10 +94,18 @@ else
 		set +x
 	fi
 	# /usr is not writable on SIP-enabled macOS, so /usr/X11 cannot be symlinked to
-	# /opt/X11, and DYLD_LIBRARY_PATH is not enough on its own either: macOS strips
-	# DYLD_* when it launches the (SIP-protected) system bash, so it does not survive
-	# from one CI step to the next. Repoint the install names instead -- this is
-	# idempotent, and it lands inside MNE_ROOT so it gets cached with it.
+	# /opt/X11. Repoint the install names instead -- this is idempotent, and it lands
+	# inside MNE_ROOT so it gets cached along with it.
+	#
+	# Deliberately not done with DYLD_LIBRARY_PATH. That would have to be exported
+	# for the rest of the CI job, and dyld resolves libraries by leaf name from it
+	# for *every* process, so /opt/X11/lib would shadow the system OpenGL with
+	# XQuartz's Mesa libGL for everything the job runs afterwards (mne-python#14230:
+	# hundreds of "symbol _CGLSetCurrentContext missing from root that overrides
+	# ... libGL.dylib" warnings, a crashed xdist worker, and failures in tests that
+	# assert on subprocess stderr). After the relink nothing needs it anyway: the
+	# only remaining dependencies are absolute system paths and
+	# @executable_path/../lib/gcc/lib.
 	for _MINIMAL_CMDS_EXE in "${MNE_ROOT}"/bin/*; do
 		otool -L "${_MINIMAL_CMDS_EXE}" \
 			| awk '/\/usr\/X11\/lib\//{print $1}' \
@@ -107,7 +115,6 @@ else
 					"${_MINIMAL_CMDS_EXE}"
 			done
 	done
-	_minimal_cmds_set DYLD_LIBRARY_PATH "${MNE_ROOT}/lib:/opt/X11/lib${DYLD_LIBRARY_PATH:+:${DYLD_LIBRARY_PATH}}"
 fi
 
 unset -f _minimal_cmds_set
