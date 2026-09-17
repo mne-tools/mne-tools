@@ -63,7 +63,7 @@ def main():
         )
 
     # Get dependency URLs
-    core_deps_urls = {dep: None for dep in core_deps_pins.keys()}
+    core_deps_urls = {dep: None for dep in core_deps_pins}
     url_search_order = [
         "project_urls/homepage",
         "project_urls/documentation",
@@ -122,16 +122,34 @@ def main():
         readme = f.read()
     lines = readme.splitlines()
     out_lines = list()
-    skip = False
+    skip, found_begin, found_end = False, False, False
+    logger.info(
+        "Checking if %s needs to be updated. Looking for the following start and end "
+        "markers to make changes between:\n%s\n%s",
+        readme_path,
+        BEGIN,
+        END,
+    )
     for line in lines:
         if line.strip() == BEGIN:
             skip = True
+            found_begin = True
             out_lines.append(line)
             out_lines.extend(["", *core_deps_bullets, ""])
         if line.strip() == END:
+            if not found_begin:
+                raise RuntimeError(
+                    f"Found end marker before start marker in {readme_path}."
+                )
             skip = False
+            found_end = True
         if not skip:
             out_lines.append(line)
+    if not found_begin or not found_end:
+        raise RuntimeError(
+            f"Did not find both start and end markers in {readme_path}. "
+            "Please add them to the file."
+        )
     new = "\n".join(out_lines) + "\n"
     old = readme
     if new != old:
