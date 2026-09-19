@@ -12,6 +12,7 @@ from tomlkit.toml_file import TOMLFile
 
 from mne_tools.helpers import (
     IMPORT_MODULE_NAME_MAPPING,
+    as_minor_version,
     get_bad_deps_message,
     get_deps_to_check,
     get_min_pinned_ver,
@@ -103,7 +104,7 @@ def main():
         pyproject_ver = Version(pyproject_ver)
         name = IMPORT_MODULE_NAME_MAPPING.get(mod_name, mod_name)
 
-        if name not in lockfile_modules.keys():
+        if name not in lockfile_modules:
             bad_missing.append(name)
             continue
         lockfile_ver = lockfile_modules[name]
@@ -111,7 +112,7 @@ def main():
 
         # Discard micro info from lockfile version if it's not specified in pyproject
         if len(pyproject_ver.release) == 2:
-            lockfile_ver = Version(f"{lockfile_ver.major}.{lockfile_ver.minor}")
+            lockfile_ver = as_minor_version(lockfile_ver)
 
         if lockfile_ver != pyproject_ver:
             bad_version.append(
