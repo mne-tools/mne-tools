@@ -51,7 +51,7 @@ from packaging.requirements import Requirement
 from packaging.specifiers import SpecifierSet
 from packaging.version import InvalidVersion, Version
 from tomlkit import parse
-from tomlkit.items import Comment, Trivia
+from tomlkit.items import Comment, Trivia, _ArrayItemGroup
 from tomlkit.toml_file import TOMLFile
 
 from mne_tools.helpers import as_minor_version, read_extended_metadata, read_pyproject
@@ -61,6 +61,16 @@ logger = logging.getLogger(__name__)
 
 
 def main():
+    """Update version specifiers in `pyproject.toml`.
+
+    Dependencies in `pyproject.toml` are looked for in:
+    - project > dependencies
+    - project > optional-dependencies
+    - dependency-groups
+
+    `dependency-groups` are considered to be dev-facing dependency groups, and will not
+    be logged to the changelog if updated.
+    """
     parser = ArgumentParser(
         description="Update version specifiers in `pyproject.toml`."
     )
@@ -79,10 +89,10 @@ def main():
     parser.add_argument(
         "--changelog-file",
         type=str,
-        default=os.path.join("doc", "changes", "dev", "dependency.rst"),
+        default=None,
         help=(
             "The file to write the changelog entry to, if versions are updated, "
-            "relative to `project-root`."
+            "relative to `project-root`. If `None`, no changelog entry will be written."
         ),
     )
 
@@ -137,22 +147,20 @@ def main():
 
     # Need to write a changelog entry if versions were updated
     if changed:
-        changelog_text = "Updated minimum for:\n\n"
-        changelog_text += "\n".join(f"- {change}" for change in changed)
-        logger.info(changelog_text)
-        # no reason to print this but it should go in the changelog
-        changelog_text += (
-            "\n\nChanges implemented via CI action created by `Thomas Binns`_.\n"
-        )
-        changelog_path = os.path.join(project_root, changelog_file)
-        with open(changelog_path, "w", encoding="utf-8") as f:
-            f.write(changelog_text)
+        logger.info("Versions updated for %d dependencies.", len(changed))
+        if changelog_file is not None:
+            changelog_text = "Updated minimum for:\n\n"
+            changelog_text += "\n".join(f"- {change}" for change in changed)
+            changelog_path = os.path.join(project_root, changelog_file)
+            with open(changelog_path, "w", encoding="utf-8") as f:
+                f.write(changelog_text)
     else:
-        logger.info("No dependency versions needed updating.")
-        return
+        # Don't return here, as comments about version availability may have been
+        # updated which should be written to the pyproject.toml file
+        logger.info("No dependency versions to update.")
 
     # Save updated pyproject.toml (replace ugly \" with ' first)
-    logger.info("Writing updated pyproject.toml to %s", project_root)
+    logger.info("Writing pyproject.toml to %s", project_root)
     pyproject = parse(pyproject.as_string().replace('\\"', "'"))
     TOMLFile(os.path.join(project_root, "pyproject.toml")).write(pyproject)
 
@@ -183,7 +191,7 @@ def _get_release_and_drop_dates(
         if version.is_prerelease:
             continue
         release_date = datetime.datetime.fromisoformat(f["upload-time"]).replace(
-            tzinfo=None
+            tzinfo=datetime.timezone.utc
         )
         if not release_date:
             continue
@@ -193,7 +201,6 @@ def _get_release_and_drop_dates(
         cutoff_date = current_date - support_days
         pre_cutoff = bool(release_date <= cutoff_date)  # was available X time ago
         releases[ver] = {"release_date": release_date, "pre_cutoff": pre_cutoff}
-
     return releases
 
 
@@ -258,7 +265,11 @@ def _update_specifiers(
             req.specifier = SpecifierSet(",".join(new_spec))
 
             dependencies._value[idx] = _add_date_comment(
-                dependencies._value[idx], min_ver_release, next_ver, next_ver_release
+                dependencies._value[idx],
+                min_ver_release,
+                next_ver,
+                next_ver_release,
+                support_days,
             )
         dependencies[idx] = _prettify_requirement(req)
 
@@ -270,7 +281,6 @@ def _update_specifiers(
                 if new.replace(" ", "") != old.replace(" ", "")
             ]
         )
-
     return changed
 
 
@@ -304,7 +314,6 @@ def _find_version_to_pin_and_release(
     release = release_dates[version]["release_date"]
     # Discard patch info if not needed
     version = as_minor_version(version) if not use_patch else version
-
     return version, release
 
 
@@ -324,13 +333,19 @@ def _prettify_requirement(req: Requirement) -> str:
     return (req.name + specifiers + str(req)[len(req.name) :]).replace('"', "'")
 
 
-def _add_date_comment(dependency, min_ver_release, next_ver, next_ver_release):
+def _add_date_comment(
+    dependency: _ArrayItemGroup,
+    min_ver_release: datetime.datetime,
+    next_ver: Version | None,
+    next_ver_release: datetime.datetime | None,
+    support_days: datetime.timedelta,
+) -> _ArrayItemGroup:
     """Add comment for when the min version was released and when it will be changed."""
     comment = f"# released {min_ver_release.strftime('%Y-%m-%d')}"
     if next_ver is not None:
         comment += (
             f", will become {next_ver!s} on "
-            f"{(next_ver_release + SUPPORT_TIME).strftime('%Y-%m-%d')}"
+            f"{(next_ver_release + support_days).strftime('%Y-%m-%d')}"
         )
     else:
         comment += ", no newer version available"
@@ -340,7 +355,7 @@ def _add_date_comment(dependency, min_ver_release, next_ver, next_ver_release):
     return dependency
 
 
-def _find_specifier_order(specifiers):
+def _find_specifier_order(specifiers: SpecifierSet) -> list[int]:
     """Find ascending order of specifiers according to their version."""
     versions = []
     for spec in specifiers:
