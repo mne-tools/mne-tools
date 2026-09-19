@@ -12,6 +12,7 @@ from packaging.version import Version
 
 from mne_tools.helpers import (
     MODULE_IMPORT_NAME_MAPPING,
+    as_minor_version,
     get_bad_deps_message,
     get_deps_to_check,
     get_min_pinned_ver,
@@ -100,7 +101,7 @@ def main():
 
         # Discard micro info from env version if it's not specified in pyproject
         if len(pyproject_ver.release) == 2:
-            env_ver = Version(f"{env_ver.major}.{env_ver.minor}")
+            env_ver = as_minor_version(env_ver)
 
         if env_ver != pyproject_ver:
             bad_version.append(

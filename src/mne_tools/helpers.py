@@ -12,6 +12,7 @@ import yaml
 from packaging.requirements import Requirement
 from packaging.specifiers import SpecifierSet
 from packaging.utils import canonicalize_name
+from packaging.version import Version
 
 logger = logging.getLogger(__name__)
 
@@ -182,23 +183,30 @@ def check_date_format(date_str: str) -> None:
         ) from error
 
 
-def read_pyproject(project_root: str) -> dict:
+def read_pyproject(
+    project_root: str, to_dict: bool = True
+) -> dict | tomlkit.container.Container:
     """Read `pyproject.toml` file.
 
     Parameters
     ----------
     project_root : str
         The path to the project root directory.
+    to_dict : bool
+        Whether to return the `pyproject.toml` contents as a dict or as a tomlkit
+        Container. Default is True.
 
     Returns
     -------
-    pyproject : dict
+    pyproject : dict | tomlkit.container.Container
         The `pyproject.toml` contents.
     """
     with open(os.path.join(project_root, "pyproject.toml"), "r", encoding="utf-8") as f:
         pyproject = tomlkit.parse(f.read())
 
-    return pyproject.unwrap()  # convert to dict from tomlkit container
+    if to_dict:
+        return pyproject.unwrap()
+    return pyproject
 
 
 def read_extended_metadata(metadata_path: str) -> dict:
@@ -451,3 +459,19 @@ def split_optional_args(arg: str | None, sep: str = ",") -> list[str]:
     if arg is None:
         return []
     return [a.strip() for a in arg.split(sep)]
+
+
+def as_minor_version(ver: Version) -> Version:
+    """Convert a version to its major.minor form.
+
+    Parameters
+    ----------
+    ver : Version
+        The version to convert.
+
+    Returns
+    -------
+    major_minor_ver : Version
+        The version in major.minor form.
+    """
+    return Version(f"{ver.major}.{ver.minor}")

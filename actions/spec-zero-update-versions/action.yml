@@ -1,0 +1,34 @@
+name: 'MNE-Tools: Update version specifiers according to a SPEC-0-like policy'
+description: 'Update version specifiers in `pyproject.toml`.'
+author: 'MNE-Tools'
+inputs:
+  # For descriptions of the inputs, see `src/mne_tools/spec_zero_update_versions.py`
+  project-root:
+    required: false
+    default: ${{ github.workspace }}
+  support-days:
+    required: false
+    default: 730
+  changelog-path:
+    required: false
+    default: null
+runs:
+  using: composite
+  steps:
+    - name: Install Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.14'
+    - name: Get root directory of the action
+      id: action-root
+      uses: $/actions/get-action-root
+    - name: Install actions dependencies
+      run: pip install -e ${{ steps.action-root.outputs.action-root }}
+      shell: bash
+    - name: Update version specifiers
+      run: |
+        python -m mne_tools.spec_zero_update_versions \
+          "${{ inputs.project-root }}" \
+          --support-days "${{ inputs.support-days }}" \
+          --changelog-path "${{ inputs.changelog-path }}"
+      shell: bash
