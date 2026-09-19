@@ -87,7 +87,7 @@ def main():
         help="The number of days to look back to find the minimum supported version.",
     )
     parser.add_argument(
-        "--changelog-file",
+        "--changelog-path",
         type=str,
         default=None,
         help=(
@@ -101,7 +101,7 @@ def main():
     project_root = getattr(args, "project-root")
     # Optional args
     support_days = args.support_days
-    changelog_file = args.changelog_file
+    changelog_path = args.changelog_path
     if not isinstance(support_days, int) or support_days < 0:
         raise ValueError(
             "Invalid value for `support_days`. Expected a positive integer, got "
@@ -148,10 +148,10 @@ def main():
     # Need to write a changelog entry if versions were updated
     if changed:
         logger.info("Versions updated for %d dependencies.", len(changed))
-        if changelog_file is not None:
+        if changelog_path is not None:
             changelog_text = "Updated minimum for:\n\n"
             changelog_text += "\n".join(f"- {change}" for change in changed)
-            changelog_path = os.path.join(project_root, changelog_file)
+            changelog_path = os.path.join(project_root, changelog_path)
             with open(changelog_path, "w", encoding="utf-8") as f:
                 f.write(changelog_text)
     else:
