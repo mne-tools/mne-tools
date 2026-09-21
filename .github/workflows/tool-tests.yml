@@ -34,7 +34,7 @@ jobs:
         name: 'Install'
       - run: pytest tests --cov=mne_tools --cov-report=term-missing --cov-report=xml
         name: 'Run tests'
-      - uses: codecov/codecov-action@v7.0.0
+      - uses: codecov/codecov-action@v7.1.0
         name: 'Upload coverage'
         if: success() || failure()
   check-qt-import:
