@@ -151,6 +151,7 @@ def main():
         if changelog_path is not None:
             changelog_text = "Updated minimum for:\n\n"
             changelog_text += "\n".join(f"- {change}" for change in changed)
+            changelog_text += "\n\nChanges made automatically by mne[bot].\n"
             changelog_path = os.path.join(project_root, changelog_path)
             with open(changelog_path, "w", encoding="utf-8") as f:
                 f.write(changelog_text)
