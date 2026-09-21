@@ -1,0 +1,25 @@
+name: 'MNE-Tools: Rename towncrier files'
+description: 'Add PR numbers to towncrier files on pull request events.'
+author: 'MNE-Tools'
+inputs:
+  # For descriptions of the inputs, see `src/mne_tools/rename_towncrier.py`
+  project-root:
+    required: false
+    default: ${{ github.workspace }}
+runs:
+  using: composite
+  steps:
+    - name: Install Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.14'
+    - name: Get root directory of the action
+      id: action-root
+      uses: $/actions/get-action-root
+    - name: Install actions dependencies
+      run: pip install -e ${{ steps.action-root.outputs.action-root }}
+      shell: bash
+    - name: Rename towncrier files
+      run: |
+        python -m mne_tools.rename_towncrier "${{ inputs.project-root }}"
+      shell: bash
