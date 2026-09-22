@@ -40,7 +40,7 @@ def main():
         default="",
         help=(
             "A comma-separated list of packages for which to ignore upper pin "
-            "constraints when listing dependencies.",
+            "constraints when listing dependencies."
         ),
     )
 
