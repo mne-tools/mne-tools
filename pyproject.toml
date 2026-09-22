@@ -12,6 +12,7 @@ test = [
 
 [project]
 dependencies = [
+  "pygithub",
   "packaging",
   "pyyaml",
   "requests",
