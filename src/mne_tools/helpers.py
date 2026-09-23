@@ -25,8 +25,6 @@ IMPORT_MODULE_NAME_MAPPING = {
     value: key for key, value in MODULE_IMPORT_NAME_MAPPING.items()
 }
 
-PIP_CONDA_MAPPING = {"neo": "python-neo"}
-
 # How projects style their own names, for display in human-facing places like READMEs.
 # Keyed by `canonicalize_name`; only entries that differ from the canonical name.
 DISPLAY_NAME_MAPPING = {
