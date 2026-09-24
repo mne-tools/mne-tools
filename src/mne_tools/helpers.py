@@ -454,7 +454,7 @@ def split_optional_args(arg: str | None, sep: str = ",") -> list[str]:
     arg_list : list of str
         The list of optional arguments.
     """
-    if arg is None:
+    if arg is None or arg == "":
         return []
     return [a.strip() for a in arg.split(sep)]
 
