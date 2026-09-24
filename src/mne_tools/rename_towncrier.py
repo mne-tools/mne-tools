@@ -62,11 +62,12 @@ def main():
     directory = tc_config["directory"]
     if not directory.endswith("/"):
         directory += "/"
-    file_re = re.compile(rf"^{directory}({'|'.join(tc_types)})\.rst$")
+    types_re = "|".join(re.escape(tc_type) for tc_type in tc_types)
+    file_re = re.compile(rf"^{re.escape(directory)}({types_re})(\.\d+)?\.rst$")
     found_stubs = [f for f in modified_files if file_re.match(f)]
     for stub in found_stubs:
         fro = stub
-        to = file_re.sub(rf"{directory}{pr_num}.\1.rst", fro)
+        to = file_re.sub(rf"{directory}{pr_num}.\1\2.rst", fro)
         logger.info("Renaming %s to %s", fro, to)
         subprocess.check_call(["mv", fro, to])
 
