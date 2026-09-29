@@ -51,7 +51,7 @@ from packaging.requirements import Requirement
 from packaging.specifiers import SpecifierSet
 from packaging.version import InvalidVersion, Version
 from tomlkit import parse
-from tomlkit.items import Comment, Trivia, _ArrayItemGroup
+from tomlkit.items import Array, Comment, Trivia, _ArrayItemGroup
 from tomlkit.toml_file import TOMLFile
 
 from mne_tools.helpers import as_minor_version, read_extended_metadata, read_pyproject
@@ -206,7 +206,7 @@ def _get_release_and_drop_dates(
 
 
 def _update_specifiers(
-    dependencies: list,
+    dependencies: Array,
     releases: dict,
     support_days: datetime.timedelta,
     changed: list | None = None,
@@ -265,8 +265,8 @@ def _update_specifiers(
                 new_spec.append(spec)  # keep max vers and in-date exclusions
             req.specifier = SpecifierSet(",".join(new_spec))
 
-            dependencies._value[idx] = _add_date_comment(
-                dependencies._value[idx],
+            dependencies[idx] = _add_date_comment(
+                dependencies[idx],
                 min_ver_release,
                 next_ver,
                 next_ver_release,
