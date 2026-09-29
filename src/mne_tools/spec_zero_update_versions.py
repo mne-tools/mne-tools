@@ -51,7 +51,7 @@ from packaging.requirements import Requirement
 from packaging.specifiers import SpecifierSet
 from packaging.version import InvalidVersion, Version
 from tomlkit import parse
-from tomlkit.items import Comment, Trivia, _ArrayItemGroup
+from tomlkit.items import Array, Comment, Trivia, _ArrayItemGroup
 from tomlkit.toml_file import TOMLFile
 
 from mne_tools.helpers import as_minor_version, read_extended_metadata, read_pyproject
@@ -206,7 +206,7 @@ def _get_release_and_drop_dates(
 
 
 def _update_specifiers(
-    dependencies: list,
+    dependencies: Array,
     releases: dict,
     support_days: datetime.timedelta,
     changed: list | None = None,
@@ -265,8 +265,8 @@ def _update_specifiers(
                 new_spec.append(spec)  # keep max vers and in-date exclusions
             req.specifier = SpecifierSet(",".join(new_spec))
 
-            dependencies._value[idx] = _add_date_comment(
-                dependencies._value[idx],
+            dependencies[idx] = _add_date_comment(
+                dependencies[idx],
                 min_ver_release,
                 next_ver,
                 next_ver_release,
@@ -330,8 +330,10 @@ def _prettify_requirement(req: Requirement) -> str:
     specifiers = "".join(specifiers)
     specifiers = specifiers.rstrip(",")  # remove trailing comma
     req.specifier = SpecifierSet()  # remove ugly specifiers (from str repr)
+    extras = f"[{','.join(list(req.extras))}]" if req.extras else ""
+    markers_url = str(req)[str(req).index(";") :] if ";" in str(req) else ""
     # Add pretty specifiers to name alongside trailing info (extras, markers, url)
-    return (req.name + specifiers + str(req)[len(req.name) :]).replace('"', "'")
+    return (req.name + extras + specifiers + markers_url).replace('"', "'")
 
 
 def _add_date_comment(
