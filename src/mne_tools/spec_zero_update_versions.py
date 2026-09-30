@@ -216,9 +216,9 @@ def _update_specifiers(
 
     tomlkit Arrays have public-facing values (which are iterated over) that skip what
     tomlkit considers to be null lines (e.g., comments, newlines), and only presents the
-    'important' values (skips starting whitespace, end-of-line comma, inline comments).
-    The private-facing `._value` attribute includes these null lines, and shows all of
-    the data for each line.
+    'important' values (i.e., skips starting whitespace, end-of-line comma, inline
+    comments). The private-facing `._value` attribute includes these null lines, and
+    shows all of the data for each line.
 
     This also means when setting values, updating the public-facing values will only
     update the 'important' data (so we can't add inline comments this way). When we add
@@ -233,8 +233,8 @@ def _update_specifiers(
     values.
 
     To prevent an indexing mismatch between the public-facing and private-facing
-    values which occurs when 'null' lines are present, we keep track of the indices for
-    both value types.
+    values (which occurs when 'null' lines are present), we keep track of the indices
+    for both value types.
     """
     old_deps = deepcopy(dependencies)
     public_idx = 0  # index of public-facing tomlkit enum (skips comments, newlines)
