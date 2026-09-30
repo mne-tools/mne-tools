@@ -51,7 +51,7 @@ from packaging.requirements import Requirement
 from packaging.specifiers import SpecifierSet
 from packaging.version import InvalidVersion, Version
 from tomlkit import parse
-from tomlkit.items import Array, Comment, Trivia, _ArrayItemGroup
+from tomlkit.items import Array, Comment, Null, Trivia, _ArrayItemGroup
 from tomlkit.toml_file import TOMLFile
 
 from mne_tools.helpers import as_minor_version, read_extended_metadata, read_pyproject
@@ -212,12 +212,39 @@ def _update_specifiers(
     changed: list | None = None,
     label: str = "",
 ) -> list | None:
-    """Update dependency version specifiers inplace and optionally track changes."""
+    """Update dependency version specifiers inplace and optionally track changes.
+
+    tomlkit Arrays have public-facing values (which are iterated over) that skip what
+    tomlkit considers to be null lines (e.g., comments, newlines), and only presents the
+    'important' values (i.e., skips starting whitespace, end-of-line comma, inline
+    comments). The private-facing `._value` attribute includes these null lines, and
+    shows all of the data for each line.
+
+    This also means when setting values, updating the public-facing values will only
+    update the 'important' data (so we can't add inline comments this way). When we add
+    date comments to the dependencies, we have to do so via the private-facing `._value`
+    attribute.
+
+    However, if we only need to update the 'important' data, it is more convenient to do
+    so via the public-facing values, as these implicitly convert native Python strings
+    to tomlkit Strings. tomlkit does allow us to use native Python strings directly, but
+    it can cause issues when trying to manipulate the tomlkit object down the line. When
+    we prettify the requirement specifiers, we therefore do this via the public-facing
+    values.
+
+    To prevent an indexing mismatch between the public-facing and private-facing
+    values (which occurs when 'null' lines are present), we keep track of the indices
+    for both value types.
+    """
     old_deps = deepcopy(dependencies)
-    for idx, dep in enumerate(dependencies):
-        if isinstance(dep, dict):
+    public_idx = 0  # index of public-facing tomlkit enum (skips comments, newlines)
+    for private_idx, dep in enumerate(dependencies._value):
+        if dep.value is None or isinstance(dep.value, Null):
+            continue  # skip empty lines (e.g., comments, newlines)
+        if isinstance(dep.value, dict):
+            public_idx += 1
             continue  # skip nested dependency groups (e.g., `{'include-group': 'doc'}`)
-        req = Requirement(dep)
+        req = Requirement(dep.value)
         pkg_name = req.name
         pkg_spec = req.specifier
         if pkg_name in releases:  # check if this is a package to update
@@ -265,14 +292,15 @@ def _update_specifiers(
                 new_spec.append(spec)  # keep max vers and in-date exclusions
             req.specifier = SpecifierSet(",".join(new_spec))
 
-            dependencies[idx] = _add_date_comment(
-                dependencies[idx],
+            dependencies._value[private_idx] = _add_date_comment(
+                dependencies._value[private_idx],
                 min_ver_release,
                 next_ver,
                 next_ver_release,
                 support_days,
             )
-        dependencies[idx] = _prettify_requirement(req)
+        dependencies[public_idx] = _prettify_requirement(req)
+        public_idx += 1
 
     if changed is not None:
         changed.extend(
@@ -331,9 +359,9 @@ def _prettify_requirement(req: Requirement) -> str:
     specifiers = specifiers.rstrip(",")  # remove trailing comma
     req.specifier = SpecifierSet()  # remove ugly specifiers (from str repr)
     extras = f"[{','.join(list(req.extras))}]" if req.extras else ""
-    markers_url = str(req)[str(req).index(";") :] if ";" in str(req) else ""
-    # Add pretty specifiers to name alongside trailing info (extras, markers, url)
-    return (req.name + extras + specifiers + markers_url).replace('"', "'")
+    markers = str(req)[str(req).index(";") :] if ";" in str(req) else ""
+    # Add pretty specifiers to name alongside trailing info (extras, markers)
+    return (req.name + extras + specifiers + markers).replace('"', "'")
 
 
 def _add_date_comment(
