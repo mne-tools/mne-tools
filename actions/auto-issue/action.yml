@@ -1,0 +1,50 @@
+name: 'MNE-Tools: Open or close an issue for a failing check'
+description: 'Open an issue when something is failing (unless one is already open), and close it once it is not. The issue is identified by its exact title, among open issues with `label` if one is given.'
+author: 'MNE-Tools'
+inputs:
+  title:
+    description: 'Issue title, which identifies the issue.'
+    required: true
+  failing:
+    description: '"true" to open the issue if it is not open, "false" to close it if it is.'
+    required: true
+  body:
+    description: 'Issue body, used when opening.'
+    required: false
+    default: ''
+  comment:
+    description: 'Comment left when closing.'
+    required: false
+    default: 'No longer failing.'
+  label:
+    description: 'Existing label to add when opening and to narrow the search for the open issue. Recommended for repositories with many open issues, since only the 100 most recently opened ones are searched.'
+    required: false
+    default: ''
+runs:
+  using: composite
+  steps:
+    - name: Open or close the issue
+      env:
+        GH_TOKEN: ${{ github.token }}
+        GH_REPO: ${{ github.repository }}
+        TITLE: ${{ inputs.title }}
+        FAILING: ${{ inputs.failing }}
+        BODY: ${{ inputs.body }}
+        COMMENT: ${{ inputs.comment }}
+        LABEL: ${{ inputs.label }}
+      # Listing rather than `--search` because the search index can lag behind a
+      # newly opened issue, which would lead to duplicates.
+      run: |
+        set -eo pipefail
+        label_args=()
+        if [[ -n "$LABEL" ]]; then
+          label_args=(--label "$LABEL")
+        fi
+        issue=$(gh issue list "${label_args[@]}" --state open --limit 100 --json number,title --jq 'map(select(.title == env.TITLE))[0].number // empty')
+        echo "$TITLE: failing=$FAILING (open issue: ${issue:-none})"
+        if [[ "$FAILING" == "true" && -z "$issue" ]]; then
+          gh issue create "${label_args[@]}" --title "$TITLE" --body "$BODY"
+        elif [[ "$FAILING" == "false" && -n "$issue" ]]; then
+          gh issue close "$issue" --comment "$COMMENT"
+        fi
+      shell: bash
