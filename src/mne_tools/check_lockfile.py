@@ -102,7 +102,7 @@ def main():
         if pyproject_ver is None:
             continue  # no min version specified, so no check needed
         pyproject_ver = Version(pyproject_ver)
-        name = IMPORT_MODULE_NAME_MAPPING.get(mod_name, mod_name)
+        name = IMPORT_MODULE_NAME_MAPPING.get(mod_name, mod_name).lower()
 
         if name not in lockfile_modules:
             bad_missing.append(name)
