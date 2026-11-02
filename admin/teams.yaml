@@ -374,6 +374,8 @@
       role: maintain
     - repo: mne-connectivity
       role: maintain
+    - repo: mne-docker
+      role: maintain
     - repo: mne-gui-addons
       role: maintain
     - repo: mne-installers
