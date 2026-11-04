@@ -68,12 +68,19 @@
     - repo: mne-bids-pipeline
       role: maintain
 
+- name: MNE-Connectivity Admins
+  description: ''
+  members:
+    - tsbinns
+  permissions:
+    - repo: mne-connectivity
+      role: admin
+
 - name: MNE-Connectivity Maintainers
   description: ''
   members:
     - adam2392
     - britta-wstnr
-    - tsbinns
     - wmvanvliet
   permissions:
     - repo: mne-connectivity
